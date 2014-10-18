@@ -96,10 +96,16 @@ def meaningful_diff(source_path, dest_path):
     return result
 
 
+def usage():
+    print >> sys.stderr, "usage: git zply-diff [-h] <patch-file1> <patch-file2>"
+    sys.exit(2)
+
+
 def main():
-    if len(sys.argv) < 3:
-        print >> sys.stderr, "usage: git zply-diff <filename1> <filename2>"
-        return 2
+    if '-h' in sys.argv:
+        usage()
+    elif len(sys.argv) < 3:
+        usage()
 
     filename1 = sys.argv[1]
     filename2 = sys.argv[2]

@@ -70,10 +70,16 @@ def _fixup(lines):
     _remove_trailing_extra_blank_lines_from_subject(lines)
 
 
+def usage():
+    print >> sys.stderr, "usage: git zply-fixup [-h] <patch-file>"
+    sys.exit(2)
+
+
 def main():
-    if len(sys.argv) < 2:
-        print >> sys.stderr, "usage: git zply-fixup <filename>"
-        return 2
+    if '-h' in sys.argv:
+        usage()
+    elif len(sys.argv) < 2:
+        usage()
 
     filename = sys.argv[1]
 

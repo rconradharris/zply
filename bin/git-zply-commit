@@ -9,16 +9,16 @@ function realpath {
     echo $(cd $(dirname $1); pwd)/$(basename $1);
 }
 
-function usage() {
-    die "usage: git zply-commit [-h] [-b based-on] <patch-repo-patch>"
-}
-
 function check_patch_repo() {
     if [[ ! -e $1 ]]; then
         die "error: Patch repo directory not found"
     elif [[ ! -e $1/.git ]]; then
         die "error: Patch repo is not a git repo (did you git init it?)"
     fi
+}
+
+function usage() {
+    die "usage: git zply-commit [-h] [-b based-on] <patch-repo-patch>"
 }
 
 while getopts 'b:h' opt; do

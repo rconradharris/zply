@@ -16,8 +16,21 @@ function check_patch_repo() {
     fi
 }
 
+function usage() {
+    die "usage: git zply-sync [-h] <format-path> <patch-repo-path>"
+}
+
+while getopts 'h' opt; do
+    case $opt in
+        h) usage;;
+        *) usage;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    die "usage: git zply-sync <format-path> <patch-repo-path>"
+    usage
 fi
 
 FORMAT_PATH=`realpath $1`
