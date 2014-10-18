@@ -71,7 +71,8 @@ fi
 PATCH_REPO_PATH=$1
 check_patch_repo $PATCH_REPO_PATH
 SINCE=$2
-BASED_ON_HASH=`git show --pretty="%H" $SINCE`
+git rev-parse -q --verify $SINCE > /dev/null || die "Revision $SINCE not found"
+BASED_ON_HASH=`git rev-parse $SINCE`
 
 git zply-format -o $FORMAT_PATH $SINCE || die "git zply-format failed"
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die "git zply-sync failed"
