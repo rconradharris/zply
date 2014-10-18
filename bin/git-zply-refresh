@@ -50,7 +50,7 @@ function check_patch_repo() {
 }
 
 function usage() {
-    >&2 echo $@ "usage: git zply-refresh [-h] [-v] <patch-repo-path> <since>"
+    >&2 echo $@ "usage: $CMD [-h] [-v] <patch-repo-path> <since>"
     exit 1
 }
 

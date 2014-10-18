@@ -14,7 +14,7 @@ function die() {
 }
 
 function usage() {
-    >&2 echo $@ "usage: git zply-format [-h] [-o output-path] [-v] <since>"
+    >&2 echo $@ "usage: $CMD [-h] [-o output-path] [-v] <since>"
     exit 1
 }
 

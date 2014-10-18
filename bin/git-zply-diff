@@ -100,8 +100,8 @@ def meaningful_diff(source_path, dest_path):
 
 
 def usage():
-    print >> sys.stderr, "usage: git zply-diff [-h] [-v]"\
-                         " <patch-file1> <patch-file2>"
+    print >> sys.stderr, "usage: %s [-h] [-v]"\
+                         " <patch-file1> <patch-file2>" % CMD
     sys.exit(2)
 
 

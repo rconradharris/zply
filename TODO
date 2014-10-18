@@ -1,5 +1,3 @@
-- Use $CMD in usage
-
 Better edge case handling:
     - Do not save if rebase in progress
 

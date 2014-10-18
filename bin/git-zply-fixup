@@ -74,7 +74,7 @@ def _fixup(lines):
 
 
 def usage():
-    print >> sys.stderr, "usage: git zply-fixup [-h] [-v] <patch-file>"
+    print >> sys.stderr, "usage: %s [-h] [-v] <patch-file>" % CMD
     sys.exit(2)
 
 
