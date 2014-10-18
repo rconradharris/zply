@@ -78,19 +78,24 @@ for patch in `ls *.patch`; do
         fi
     fi
 done
+rm -rf $PATCH_TMP_DIR
 
 # Commit
 echo "Commiting patches..."
 git add *.patch
 cat > .tmp-commit-msg <<-EOF
 Saving patches...
-
-Based-On: $BASED_ON_HASH
 EOF
+
+# Add based-on annotation
+if [[ -n $BASED_ON_HASH ]]; then
+    echo >> .tmp-commit-msg
+    echo "Based-On: $BASED_ON_HASH" >> .tmp-commit-msg
+fi
+
 # -t would abort the commit if the message was not edited; we don't want to
 # require that in all cases, so using -eF instead
 git commit -qeF .tmp-commit-msg
 rm .tmp-commit-msg
 popd > /dev/null
-rm -rf $PATCH_TMP_DIR
 echo "Done."
