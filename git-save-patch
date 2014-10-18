@@ -29,14 +29,14 @@ git format-patch -kpo $PATCH_TMP_DIR $SINCE > /dev/null || die "git format-patch
 
 echo "Copying patches into patch repo..."
 for patch in `ls $PATCH_TMP_DIR/*.patch`; do
-    ../zply/git-fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
+    git fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
     mv $patch.tmp $patch
 
     # Only copy patches that meaningfully changed
     COPY_PATCH=1
     REPO_PATCH=$PATCH_REPO_PATH/`basename $patch`
     if [[ -e $REPO_PATCH ]]; then
-        ../zply/git-diff-patch $patch $REPO_PATCH > /dev/null
+        git diff-patch $patch $REPO_PATCH > /dev/null
         if [[ $? -eq 0 ]]; then
             COPY_PATCH=0
         elif [[ $? -ne 1 ]]; then
