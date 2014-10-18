@@ -1,4 +1,32 @@
 #!/usr/bin/env python
+"""
+NAME
+    git diff-patch - determine if two patch files are 'meaningfully' different
+
+SYNOPSIS
+
+    git diff-patch <filename1> <filename2>
+
+DESCRIPTION
+
+    The two patches are NOT meaningfully different if only the context lines or
+    embedded hashes in the `index` lines have changed, otherwise they are.
+
+OUTPUT
+
+    Prints lines that meaningfully changed to stdout
+
+EXIT STATUS
+
+    0 - not meaningfully different
+    1 - meaningfully different
+    2 - usage error
+    3 - on or more input files not present
+
+NOTE
+
+    This is an INTERNAL command used by git save-patch
+"""
 import os
 import subprocess
 import sys

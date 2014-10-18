@@ -1,21 +1,38 @@
 #!/bin/bash
-# git-save-patch
-
-PATCH_TMP_DIR=$PWD/.patches
+#
+# NAME
+#
+#   git-save-patch - save patch series to patch repo
+#
+# SYNOPSIS
+#
+#   git-save-patch <patch-repo-path> <since>
+#
+# DESCRIPTION
+#
+#   Creates a series of patches and saves them into the patch repo.
+#
+# OUTPUT
+#
+#   Prints current step to stdout
+#
+# EXIT STATUS
+#
+#   0 - success
+#   1 - failure
 
 function die() {
     >&2 echo $@
     exit 1
 }
 
-
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    die "usage: git save-patch <path-to-patch-repo> <since>"
+    die "usage: git save-patch <patch-repo-path> <since>"
 fi
 
 PATCH_REPO_PATH=$1
 SINCE=$2
-
+PATCH_TMP_DIR=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 
 # TODO: Verify PATCH_REPO_PATH exists

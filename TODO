@@ -1,6 +1,15 @@
-- Provide steps to install into git command's folder
-- Do not save if rebase in progress
-- Verify patch-repo is git repo and exists
+Better edge case handling:
+    - Do not save if rebase in progress
+    - Verify patch-repo is git repo and exists
+
 - Add man page
 - Add -v version to `save-patch`
+
+- Rename files to:
+    - git zply-save
+    - git zply-fixup
+    - git zply-diff
+
+
+Code cleanup:
 - Better handle trailing-whitespace fixup (sed?)
