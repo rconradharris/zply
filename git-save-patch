@@ -32,23 +32,15 @@ fi
 
 PATCH_REPO_PATH=$1
 SINCE=$2
-PATCH_TMP_DIR=$PWD/.patches
+OUTPUT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 
 # TODO: Verify PATCH_REPO_PATH exists
 # TODO: Verify PATCH_REPO_PATH is a git repository
 
-# Create patch series
-rm -rf $PATCH_TMP_DIR
+git zply-format $OUTPUT_PATH $SINCE
 
-echo "Formatting patches..."
-git format-patch -kpo $PATCH_TMP_DIR $SINCE > /dev/null || die "git format-patch failed"
-
-echo "Copying patches into patch repo..."
-for patch in `ls $PATCH_TMP_DIR/*.patch`; do
-    git fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
-    mv $patch.tmp $patch
-
+for patch in `ls $OUTPUT_PATH/*.patch`; do
     # Only copy patches that meaningfully changed
     COPY_PATCH=1
     REPO_PATCH=$PATCH_REPO_PATH/`basename $patch`
@@ -71,14 +63,14 @@ pushd $PATCH_REPO_PATH > /dev/null
 echo "Cleaning up vestigial patches..."
 for patch in `ls *.patch`; do
     patch_basename=`basename $patch`
-    if [[ ! -e $PATCH_TMP_DIR/$patch_basename ]]; then
+    if [[ ! -e $OUTPUT_PATH/$patch_basename ]]; then
         git rm $patch_basename
         if [[ $? -ne 0 ]]; then
             die "git rm failed"
         fi
     fi
 done
-rm -rf $PATCH_TMP_DIR
+rm -rf $OUTPUT_PATH
 
 # Commit
 echo "Commiting patches..."
