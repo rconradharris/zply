@@ -14,6 +14,7 @@ Why zply instead of ply?
 * ``zply`` is not needed to apply patches (jenkins no longer needs to have
   ```ply`` installed) -- only patch maintainers who are modifying patches need
   ``zply``
+* Use standard terminology ('refresh' patches)
 
 
 Downsides

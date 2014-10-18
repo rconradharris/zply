@@ -10,10 +10,5 @@ Better edge case handling:
 - Add man pages for each command
 - Add man git-zply for workflow documentation
 
-- Add -v version to `save-patch`
-
-- Rename files to:
-    - git zply-save
-
 Code cleanup:
 - Better handle trailing-whitespace fixup (sed?)

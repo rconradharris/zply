@@ -3,12 +3,12 @@ zero-ply: minimal git patch management
 ======================================
 
 
-Save Patches to Patch Repo
-==========================
+Refreshing Patches
+==================
 
-Run zply's ``save-patch`` command::
+Run zply's **refresh** command::
 
-    git save-patch /path/to/patch-repo <since>
+    git zply-refresh /path/to/patch-repo <since>
 
 This command does the following:
 

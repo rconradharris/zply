@@ -4,5 +4,4 @@ install:
 	cp git-* $(INSTALL_PATH)
 
 uninstall:
-	rm $(INSTALL_PATH)/git-save-patch
 	rm $(INSTALL_PATH)/git-zply-*
