@@ -18,6 +18,6 @@ git format-patch -kpo $FORMAT_PATH $SINCE > /dev/null || die "git format-patch f
 
 echo "Fixing up patches..."
 for patch in `ls $FORMAT_PATH/*.patch`; do
-    git fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
+    git zply-fixup $patch > $patch.tmp || die "git fixup-patch failed"
     mv $patch.tmp $patch
 done

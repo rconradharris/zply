@@ -2,7 +2,6 @@
 
 # TODO: Verify PATCH_REPO_PATH exists
 # TODO: Verify PATCH_REPO_PATH is a git repository
-# TODO: this can become rm $(INSTALL_PATH)/git-zply-* in Makefile
 
 Better edge case handling:
     - Do not save if rebase in progress
@@ -15,9 +14,7 @@ Better edge case handling:
 
 - Rename files to:
     - git zply-save
-    - git zply-fixup
     - git zply-diff
-
 
 Code cleanup:
 - Better handle trailing-whitespace fixup (sed?)
