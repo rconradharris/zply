@@ -63,7 +63,7 @@ check_patch_repo $PATCH_REPO_PATH
 SINCE=$2
 FORMAT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
-git zply-format $FORMAT_PATH $SINCE
+git zply-format -o $FORMAT_PATH $SINCE
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH
 git zply-commit -b $BASED_ON_HASH $PATCH_REPO_PATH
 rm -rf $FORMAT_PATH

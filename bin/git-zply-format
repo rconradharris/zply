@@ -13,29 +13,31 @@ function die() {
 }
 
 function usage() {
-    die "usage: git zply-format [-h] [-v] <output-path> <since>"
+    die "usage: git zply-format [-h] [-o output-path] [-v] <since>"
 }
 
-while getopts 'hv' opt; do
+OUTPUT_PATH=.
+
+while getopts 'ho:v' opt; do
     case $opt in
         h) usage;;
+        o) OUTPUT_PATH=$OPTARG;;
         v) version;;
         *) usage;;
     esac
 done
-
 shift $(($OPTIND - 1))
-if [[ -z $1 ]] || [[ -z $2 ]]; then
+
+if [[ -z $1 ]]; then
     usage
 fi
 
-FORMAT_PATH=$1
-SINCE=$2
+SINCE=$1
 
 echo "Formatting patches..."
-git format-patch -kpo $FORMAT_PATH $SINCE > /dev/null || die "git format-patch failed"
+git format-patch -kpo $OUTPUT_PATH $SINCE > /dev/null || die "git format-patch failed"
 
-for patch in `ls $FORMAT_PATH/*.patch`; do
+for patch in `ls $OUTPUT_PATH/*.patch`; do
     git zply-fixup $patch > $patch.tmp || die "git zply-fixup failed"
     mv $patch.tmp $patch
 done
