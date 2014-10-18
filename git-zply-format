@@ -10,14 +10,14 @@ if [[ -z $1 ]] || [[ -z $2 ]]; then
     die "usage: git zply-format <output-path> <since>"
 fi
 
-OUTPUT_PATH=$1
+FORMAT_PATH=$1
 SINCE=$2
 
 echo "Formatting patches..."
-git format-patch -kpo $OUTPUT_PATH $SINCE > /dev/null || die "git format-patch failed"
+git format-patch -kpo $FORMAT_PATH $SINCE > /dev/null || die "git format-patch failed"
 
 echo "Fixing up patches..."
-for patch in `ls $OUTPUT_PATH/*.patch`; do
+for patch in `ls $FORMAT_PATH/*.patch`; do
     git fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
     mv $patch.tmp $patch
 done

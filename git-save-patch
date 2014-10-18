@@ -26,54 +26,29 @@ function die() {
     exit 1
 }
 
+function realpath {
+    echo $(cd $(dirname $1); pwd)/$(basename $1);
+}
+
 if [[ -z $1 ]] || [[ -z $2 ]]; then
     die "usage: git save-patch <patch-repo-path> <since>"
 fi
 
-PATCH_REPO_PATH=$1
+PATCH_REPO_PATH=`realpath $1`
 SINCE=$2
-OUTPUT_PATH=$PWD/.patches
+FORMAT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 
 # TODO: Verify PATCH_REPO_PATH exists
 # TODO: Verify PATCH_REPO_PATH is a git repository
 
-git zply-format $OUTPUT_PATH $SINCE
-
-for patch in `ls $OUTPUT_PATH/*.patch`; do
-    # Only copy patches that meaningfully changed
-    COPY_PATCH=1
-    REPO_PATCH=$PATCH_REPO_PATH/`basename $patch`
-    if [[ -e $REPO_PATCH ]]; then
-        git diff-patch $patch $REPO_PATCH > /dev/null
-        if [[ $? -eq 0 ]]; then
-            COPY_PATCH=0
-        elif [[ $? -ne 1 ]]; then
-            die "git diff-patch failed"
-        fi
-    fi
-    if [[ $COPY_PATCH -eq 1 ]]; then
-        cp $patch $PATCH_REPO_PATH
-    fi
-done
-
-pushd $PATCH_REPO_PATH > /dev/null
-
-# Clean up any vestigial patches
-echo "Cleaning up vestigial patches..."
-for patch in `ls *.patch`; do
-    patch_basename=`basename $patch`
-    if [[ ! -e $OUTPUT_PATH/$patch_basename ]]; then
-        git rm $patch_basename
-        if [[ $? -ne 0 ]]; then
-            die "git rm failed"
-        fi
-    fi
-done
-rm -rf $OUTPUT_PATH
+git zply-format $FORMAT_PATH $SINCE
+git zply-sync $FORMAT_PATH $PATCH_REPO_PATH
+rm -rf $FORMAT_PATH
 
 # Commit
 echo "Commiting patches..."
+pushd $PATCH_REPO_PATH > /dev/null
 git add *.patch
 cat > .tmp-commit-msg <<-EOF
 Saving patches...
