@@ -1,0 +1,46 @@
+#!/bin/bash
+# git-save-patch
+
+PATCH_TMP_DIR=.patches
+
+if [[ -z $1 ]] || [[ -z $2 ]]; then
+    >&2 echo "usage: git save-patch <path-to-patch-repo> <since>"
+    exit 1
+fi
+
+PATCH_REPO_PATH=$1
+SINCE=$2
+
+BASED_ON_HASH=`git show --pretty="%H" $SINCE`
+
+# Verify PATCH_REPO_PATH exists
+# Verify PATCH_REPO_PATH is a git repository
+
+# Create patch series
+rm -rf $PATCH_TMP_DIR
+git format-patch -kpo $PATCH_TMP_DIR $SINCE
+for patch in `ls $PATCH_TMP_DIR/*.patch`; do
+    ../ply/git-fixup-patch $patch > $patch.tmp
+    mv $patch.tmp $patch
+done
+
+# TODO: add meaningful diff
+
+# Copy patch series to patch-repo
+pushd $PATCH_REPO_PATH && git rm *.patch && popd
+cp $PATCH_TMP_DIR/*.patch $PATCH_REPO_PATH
+rm -rf $PATCH_TMP_DIR
+
+# Commit
+pushd $PATCH_REPO_PATH
+git add *.patch
+cat > .tmp-commit-msg <<-EOF
+Saving patches...
+
+Based-On: $BASED_ON_HASH
+EOF
+# -t would abort the commit if the message was not edited; we don't want to
+# require that in all cases, so using -eF instead
+git commit -eF .tmp-commit-msg
+rm .tmp-commit-msg
+popd
