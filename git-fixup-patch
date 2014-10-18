@@ -38,13 +38,13 @@ def _fixup(lines):
 def main():
     if len(sys.argv) < 2:
         print >> sys.stderr, "usage: git fixup-patch <filename>"
-        return 1
+        return 2
 
     filename = sys.argv[1]
 
     if not os.path.exists(filename):
         print >> sys.stderr, "error: file '%s' not found"
-        return 1
+        return 3
 
 
     with open(filename) as f:
@@ -53,7 +53,6 @@ def main():
     lines = patch.split('\n')
     _fixup(lines)
     print '\n'.join(lines)
-
     return 0
 
 if __name__ == '__main__':

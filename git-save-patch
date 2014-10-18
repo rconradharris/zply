@@ -13,8 +13,8 @@ SINCE=$2
 
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 
-# Verify PATCH_REPO_PATH exists
-# Verify PATCH_REPO_PATH is a git repository
+# TODO: Verify PATCH_REPO_PATH exists
+# TODO: Verify PATCH_REPO_PATH is a git repository
 
 # Create patch series
 rm -rf $PATCH_TMP_DIR
