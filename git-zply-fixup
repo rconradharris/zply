@@ -2,7 +2,7 @@
 """
 NAME
 
-    git fixup-patch: fixup a *.patch file
+    git zply-fixup: fixup a *.patch file
 
 DESCRIPTION
 
@@ -17,7 +17,7 @@ DESCRIPTION
 
 SYNOPSIS
 
-    git fixup-patch <filename>
+    git zply-fixup <filename>
 
 OUTPUT
 
@@ -72,7 +72,7 @@ def _fixup(lines):
 
 def main():
     if len(sys.argv) < 2:
-        print >> sys.stderr, "usage: git fixup-patch <filename>"
+        print >> sys.stderr, "usage: git zply-fixup <filename>"
         return 2
 
     filename = sys.argv[1]

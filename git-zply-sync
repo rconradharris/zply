@@ -25,7 +25,7 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
         if [[ $? -eq 0 ]]; then
             copy_patch=0
         elif [[ $? -ne 1 ]]; then
-            die "git diff-patch failed"
+            die "git zply-diff failed"
         fi
     fi
 

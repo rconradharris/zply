@@ -20,26 +20,20 @@
 #
 #   0 - success
 #   1 - failure
-
 function die() {
     >&2 echo $@
     exit 1
 }
 
-function realpath {
-    echo $(cd $(dirname $1); pwd)/$(basename $1);
-}
-
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    die "usage: git save-patch <patch-repo-path> <since>"
+    die "usage: git zply-refresh <patch-repo-path> <since>"
 fi
 
-PATCH_REPO_PATH=`realpath $1`
+PATCH_REPO_PATH=$1
 SINCE=$2
 FORMAT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
-
 git zply-format $FORMAT_PATH $SINCE
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH
-git zply-commit $PATCH_REPO_PATH
+git zply-commit -b $BASED_ON_HASH $PATCH_REPO_PATH
 rm -rf $FORMAT_PATH

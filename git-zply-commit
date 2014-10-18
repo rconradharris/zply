@@ -1,6 +1,5 @@
 #!/bin/bash
 # Commit all patches to patch repo
-
 function die() {
     >&2 echo $@
     exit 1
@@ -10,8 +9,20 @@ function realpath {
     echo $(cd $(dirname $1); pwd)/$(basename $1);
 }
 
+function usage() {
+    die "usage: git zply-commit [-h] [-b based-on] <patch-repo-patch>"
+}
+
+while getopts 'b:h' opt; do
+    case $opt in
+        b) BASED_ON=$OPTARG;;
+        h) usage;;
+        *) usage;;
+    esac
+done
+shift $(($OPTIND - 1))
 if [[ -z $1 ]]; then
-    die "usage: git zply-commit <patch-repo-patch>"
+    usage
 fi
 
 PATCH_REPO_PATH=`realpath $1`
@@ -23,9 +34,9 @@ Saving patches...
 EOF
 
 # Add based-on annotation
-if [[ -n $BASED_ON_HASH ]]; then
+if [[ -n $BASED_ON ]]; then
     echo >> .tmp-commit-msg
-    echo "Based-On: $BASED_ON_HASH" >> .tmp-commit-msg
+    echo "Based-On: $BASED_ON" >> .tmp-commit-msg
 fi
 
 # -t would abort the commit if the message was not edited; we don't want to
