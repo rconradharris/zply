@@ -3,6 +3,7 @@ Why zply instead of ply?
 
 * Radically simpler code
 * Small, composable commands
+* All commands get a man page (no external documentation needed)
 * Less duplication of existing git functionality
     * No restore command: just ``git am --3way``
     * No rollback command: just ``git reset --hard``

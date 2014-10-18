@@ -39,7 +39,6 @@ SINCE=$2
 FORMAT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 
-
 git zply-format $FORMAT_PATH $SINCE
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH
 git zply-commit $PATCH_REPO_PATH
