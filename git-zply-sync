@@ -21,7 +21,7 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
     patch_basename=`basename $patch`
     repo_patch=$PATCH_REPO_PATH/$patch_basename
     if [[ -e $repo_patch ]]; then
-        git diff-patch $patch $repo_patch > /dev/null
+        git zply-diff $patch $repo_patch > /dev/null
         if [[ $? -eq 0 ]]; then
             copy_patch=0
         elif [[ $? -ne 1 ]]; then

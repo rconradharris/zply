@@ -5,5 +5,4 @@ install:
 
 uninstall:
 	rm $(INSTALL_PATH)/git-save-patch
-	rm $(INSTALL_PATH)/git-diff-patch
 	rm $(INSTALL_PATH)/git-zply-*

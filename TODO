@@ -14,7 +14,6 @@ Better edge case handling:
 
 - Rename files to:
     - git zply-save
-    - git zply-diff
 
 Code cleanup:
 - Better handle trailing-whitespace fixup (sed?)
