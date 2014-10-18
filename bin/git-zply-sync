@@ -69,7 +69,9 @@ pushd $PATCH_REPO_PATH > /dev/null
 
 for patch in `ls *.patch`; do
     patch_basename=`basename $patch`
-    if [[ ! -e $FORMAT_PATH/$patch_basename ]]; then
+    if [[ -e $FORMAT_PATH/$patch_basename ]]; then
+        git add $patch_basename 2>&1 > /dev/null || die "git add failed"
+    else
         echo "Removing unused patch $patch_basename"
         git rm $patch_basename 2>&1 > /dev/null || die "git rm failed"
     fi

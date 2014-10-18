@@ -47,7 +47,6 @@ PATCH_REPO_PATH=`realpath $1`
 check_patch_repo $PATCH_REPO_PATH
 
 pushd $PATCH_REPO_PATH > /dev/null
-git add *.patch
 cat > .tmp-commit-msg <<-EOF
 Saving patches...
 EOF
@@ -62,5 +61,5 @@ fi
 # require that in all cases, so using -eF instead
 git commit -qeF .tmp-commit-msg
 rm .tmp-commit-msg
-popd > /dev/null
 echo "Commited patches"
+popd > /dev/null

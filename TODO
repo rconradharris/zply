@@ -1,3 +1,5 @@
+- zply-format should take -o option for output path
+
 Better edge case handling:
     - Do not save if rebase in progress
 

@@ -15,6 +15,7 @@ Why zply instead of ply?
   ```ply`` installed) -- only patch maintainers who are modifying patches need
   ``zply``
 * Use standard terminology ('refresh' patches)
+* More deterministic (nothing is guessed)
 
 
 Downsides
