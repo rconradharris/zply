@@ -1,11 +1,16 @@
 #!/bin/bash
 # git-save-patch
 
-PATCH_TMP_DIR=.patches
+PATCH_TMP_DIR=$PWD/.patches
+
+function die() {
+    >&2 echo $@
+    exit 1
+}
+
 
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    >&2 echo "usage: git save-patch <path-to-patch-repo> <since>"
-    exit 1
+    die "usage: git save-patch <path-to-patch-repo> <since>"
 fi
 
 PATCH_REPO_PATH=$1
@@ -20,19 +25,38 @@ BASED_ON_HASH=`git show --pretty="%H" $SINCE`
 rm -rf $PATCH_TMP_DIR
 git format-patch -kpo $PATCH_TMP_DIR $SINCE
 for patch in `ls $PATCH_TMP_DIR/*.patch`; do
-    ../ply/git-fixup-patch $patch > $patch.tmp
+    ../zply/git-fixup-patch $patch > $patch.tmp || die "git fixup-patch failed"
     mv $patch.tmp $patch
+
+    # Only copy patches that meaningfully changed
+    COPY_PATCH=1
+    REPO_PATCH=$PATCH_REPO_PATH/`basename $patch`
+    if [[ -e $REPO_PATCH ]]; then
+        ../zply/git-diff-patch $patch $REPO_PATCH > /dev/null
+        if [[ $? -eq 0 ]]; then
+            COPY_PATCH=0
+        fi
+    fi
+    if [[ $COPY_PATCH -eq 1 ]]; then
+        cp $patch $PATCH_REPO_PATH
+    fi
 done
 
-# TODO: add meaningful diff
+pushd $PATCH_REPO_PATH
 
-# Copy patch series to patch-repo
-pushd $PATCH_REPO_PATH && git rm *.patch && popd
-cp $PATCH_TMP_DIR/*.patch $PATCH_REPO_PATH
-rm -rf $PATCH_TMP_DIR
+# Clean up any vestigial patches
+for patch in `ls *.patch`; do
+    patch_basename=`basename $patch`
+    echo $PATCH_TMP_DIR/$patch_basename
+    if [[ ! -e $PATCH_TMP_DIR/$patch_basename ]]; then
+        git rm $patch_basename
+        if [[ $? -ne 0 ]]; then
+            die "git rm failed"
+        fi
+    fi
+done
 
 # Commit
-pushd $PATCH_REPO_PATH
 git add *.patch
 cat > .tmp-commit-msg <<-EOF
 Saving patches...
@@ -44,3 +68,4 @@ EOF
 git commit -eF .tmp-commit-msg
 rm .tmp-commit-msg
 popd
+rm -rf $PATCH_TMP_DIR
