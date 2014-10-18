@@ -2,3 +2,5 @@
 - Do not save if rebase in progress
 - Verify patch-repo is git repo and exists
 - Add man page
+- Add -v version to `save-patch`
+- Better handle trailing-whitespace fixup (sed?)
