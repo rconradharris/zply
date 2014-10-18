@@ -1,11 +1,7 @@
 INSTALL_PATH=/usr/local/bin
 
 install:
-	cp git-save-patch $(INSTALL_PATH)
-	cp git-diff-patch $(INSTALL_PATH)
-	cp git-fixup-patch $(INSTALL_PATH)
-	cp git-zply-format $(INSTALL_PATH)
-	cp git-zply-sync $(INSTALL_PATH)
+	cp git-* $(INSTALL_PATH)
 
 uninstall:
 	rm $(INSTALL_PATH)/git-save-patch
@@ -13,3 +9,5 @@ uninstall:
 	rm $(INSTALL_PATH)/git-fixup-patch
 	rm $(INSTALL_PATH)/git-zply-format
 	rm $(INSTALL_PATH)/git-zply-sync
+	rm $(INSTALL_PATH)/git-zply-commit
+	# TODO: this can become rm $(INSTALL_PATH)/git-zply-*

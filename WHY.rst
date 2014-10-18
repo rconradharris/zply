@@ -56,16 +56,14 @@ Commands
 
 zply-save
     zply-format
+        git format-patch
+        zply-fixup
+
     zply-sync
-    zply-commit -b $BASED_ON
+        zply-diff
+        cp
+        git rm
 
-zply-format
-    git format-patch
-    zply-fixup
-
-zply-sync
-    zply-diff
-
-zply-commit -b [based-on]
-    git add
-    git commit
+    zply-commit
+        git add
+        git commit

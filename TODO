@@ -1,3 +1,9 @@
+- Based -b to git-zply-commit
+
+# TODO: Verify PATCH_REPO_PATH exists
+# TODO: Verify PATCH_REPO_PATH is a git repository
+# TODO: this can become rm $(INSTALL_PATH)/git-zply-* in Makefile
+
 Better edge case handling:
     - Do not save if rebase in progress
     - Verify patch-repo is git repo and exists
