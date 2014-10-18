@@ -20,9 +20,18 @@
 #
 #   0 - success
 #   1 - failure
+
 function die() {
     >&2 echo $@
     exit 1
+}
+
+function check_patch_repo() {
+    if [[ ! -e $1 ]]; then
+        die "error: Patch repo directory not found"
+    elif [[ ! -e $1/.git ]]; then
+        die "error: Patch repo is not a git repo (did you git init it?)"
+    fi
 }
 
 if [[ -z $1 ]] || [[ -z $2 ]]; then
@@ -30,6 +39,7 @@ if [[ -z $1 ]] || [[ -z $2 ]]; then
 fi
 
 PATCH_REPO_PATH=$1
+check_patch_repo $PATCH_REPO_PATH
 SINCE=$2
 FORMAT_PATH=$PWD/.patches
 BASED_ON_HASH=`git show --pretty="%H" $SINCE`

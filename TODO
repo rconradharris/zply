@@ -1,6 +1,3 @@
-# TODO: Verify PATCH_REPO_PATH exists
-# TODO: Verify PATCH_REPO_PATH is a git repository
-
 - Add -h help to all commands
 
 Better edge case handling:

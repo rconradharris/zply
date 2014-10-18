@@ -8,12 +8,21 @@ function realpath {
     echo $(cd $(dirname $1); pwd)/$(basename $1);
 }
 
+function check_patch_repo() {
+    if [[ ! -e $1 ]]; then
+        die "error: Patch repo directory not found"
+    elif [[ ! -e $1/.git ]]; then
+        die "error: Patch repo is not a git repo (did you git init it?)"
+    fi
+}
+
 if [[ -z $1 ]] || [[ -z $2 ]]; then
     die "usage: git zply-sync <format-path> <patch-repo-path>"
 fi
 
 FORMAT_PATH=`realpath $1`
 PATCH_REPO_PATH=`realpath $2`
+check_patch_repo $PATCH_REPO_PATH
 
 for patch in `ls $FORMAT_PATH/*.patch`; do
     # Only copy patches that meaningfully changed

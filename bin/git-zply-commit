@@ -13,6 +13,14 @@ function usage() {
     die "usage: git zply-commit [-h] [-b based-on] <patch-repo-patch>"
 }
 
+function check_patch_repo() {
+    if [[ ! -e $1 ]]; then
+        die "error: Patch repo directory not found"
+    elif [[ ! -e $1/.git ]]; then
+        die "error: Patch repo is not a git repo (did you git init it?)"
+    fi
+}
+
 while getopts 'b:h' opt; do
     case $opt in
         b) BASED_ON=$OPTARG;;
@@ -20,12 +28,15 @@ while getopts 'b:h' opt; do
         *) usage;;
     esac
 done
+
 shift $(($OPTIND - 1))
+
 if [[ -z $1 ]]; then
     usage
 fi
 
 PATCH_REPO_PATH=`realpath $1`
+check_patch_repo $PATCH_REPO_PATH
 
 pushd $PATCH_REPO_PATH > /dev/null
 git add *.patch
