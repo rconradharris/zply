@@ -31,6 +31,8 @@ import os
 import subprocess
 import sys
 
+VERSION = '0.1'
+
 
 def meaningful_diff(source_path, dest_path):
     """Determines whether a patch changed in a 'meaningful' way.
@@ -97,13 +99,21 @@ def meaningful_diff(source_path, dest_path):
 
 
 def usage():
-    print >> sys.stderr, "usage: git zply-diff [-h] <patch-file1> <patch-file2>"
+    print >> sys.stderr, "usage: git zply-diff [-h] [-v]"\
+                         " <patch-file1> <patch-file2>"
     sys.exit(2)
+
+
+def version():
+    print VERSION
+    sys.exit(0)
 
 
 def main():
     if '-h' in sys.argv:
         usage()
+    elif '-v' in sys.argv:
+        version()
     elif len(sys.argv) < 3:
         usage()
 

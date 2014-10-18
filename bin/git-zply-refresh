@@ -20,6 +20,12 @@
 #
 #   0 - success
 #   1 - failure
+VERSION=0.1
+
+function version() {
+    echo $VERSION
+    exit 0
+}
 
 function die() {
     >&2 echo $@
@@ -35,12 +41,13 @@ function check_patch_repo() {
 }
 
 function usage() {
-    die "usage: git zply-refresh [-h] <patch-repo-path> <since>"
+    die "usage: git zply-refresh [-h] [-v] <patch-repo-path> <since>"
 }
 
-while getopts 'h' opt; do
+while getopts 'hv' opt; do
     case $opt in
         h) usage;;
+        v) version;;
         *) usage;;
     esac
 done

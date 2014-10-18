@@ -37,6 +37,8 @@ NOTE
 import os
 import sys
 
+VERSION = '0.1'
+
 
 def _remove_trailing_extra_blank_lines_from_subject(lines):
     """Different versions of git will output different amounts of trailing
@@ -71,13 +73,20 @@ def _fixup(lines):
 
 
 def usage():
-    print >> sys.stderr, "usage: git zply-fixup [-h] <patch-file>"
+    print >> sys.stderr, "usage: git zply-fixup [-h] [-v] <patch-file>"
     sys.exit(2)
+
+
+def version():
+    print VERSION
+    sys.exit(0)
 
 
 def main():
     if '-h' in sys.argv:
         usage()
+    elif '-v' in sys.argv:
+        version()
     elif len(sys.argv) < 2:
         usage()
 
