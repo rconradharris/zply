@@ -1,5 +1,12 @@
+- Better error messages
+    - die should be error in $CMD: <msg>
+
 Better edge case handling:
     - Do not save if rebase in progress
+
+Feature:
+    - Allow patch-repo to specify a COMMIT_MSG_TEMPLATE file
+        - Abort if template is not filled in
 
 Man Pages:
     - Add man pages for each command

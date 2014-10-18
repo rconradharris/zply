@@ -24,7 +24,8 @@ function check_patch_repo() {
 }
 
 function usage() {
-    die "usage: git zply-sync [-h] [-v] <format-path> <patch-repo-path>"
+    >&2 echo $@ "usage: git zply-sync [-h] [-v] <format-path> <patch-repo-path>"
+    exit 1
 }
 
 while getopts 'hv' opt; do

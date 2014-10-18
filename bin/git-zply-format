@@ -13,7 +13,8 @@ function die() {
 }
 
 function usage() {
-    die "usage: git zply-format [-h] [-o output-path] [-v] <since>"
+    >&2 echo $@ "usage: git zply-format [-h] [-o output-path] [-v] <since>"
+    exit 1
 }
 
 OUTPUT_PATH=.

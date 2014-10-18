@@ -25,7 +25,8 @@ function check_patch_repo() {
 }
 
 function usage() {
-    die "usage: git zply-commit [-h] [-v] [-b based-on] <patch-repo-patch>"
+    >&2 echo $@ "usage: git zply-commit [-h] [-v] [-b based-on] <patch-repo-patch>"
+    exit 1
 }
 
 while getopts 'b:hv' opt; do
