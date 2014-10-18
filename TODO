@@ -1,5 +1,4 @@
-- Better error messages
-    - die should be error in $CMD: <msg>
+- Use $CMD in usage
 
 Better edge case handling:
     - Do not save if rebase in progress

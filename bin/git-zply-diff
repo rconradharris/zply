@@ -31,6 +31,7 @@ import os
 import subprocess
 import sys
 
+CMD = 'git zply-diff'
 VERSION = '0.1'
 
 
@@ -109,7 +110,12 @@ def version():
     sys.exit(0)
 
 
-def main():
+def die(msg, code=1):
+    print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
+    sys.exit(code)
+
+
+if __name__ == '__main__':
     if '-h' in sys.argv:
         usage()
     elif '-v' in sys.argv:
@@ -122,13 +128,8 @@ def main():
 
     for filename in (filename1, filename2):
         if not os.path.exists(filename):
-            print >> sys.stderr, "error: file '%s' not found"
-            return 3
+            die("file '%s' not found" % filename, code=3)
 
     differs = meaningful_diff(filename1, filename2)
-
-    return 1 if differs else 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())
+    exit_code = 1 if differs else 0
+    sys.exit(exit_code)

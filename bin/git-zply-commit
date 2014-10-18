@@ -1,5 +1,6 @@
 #!/bin/bash
 # Commit all patches to patch repo
+CMD='git zply-commit'
 VERSION=0.1
 
 function version() {
@@ -8,7 +9,7 @@ function version() {
 }
 
 function die() {
-    >&2 echo $@
+    >&2 echo "[$CMD error]: $@"
     exit 1
 }
 
@@ -18,9 +19,9 @@ function realpath {
 
 function check_patch_repo() {
     if [[ ! -e $1 ]]; then
-        die "error: Patch repo directory not found"
+        die "Patch repo directory not found"
     elif [[ ! -e $1/.git ]]; then
-        die "error: Patch repo is not a git repo (did you git init it?)"
+        die "Patch repo is not a git repo (did you git init it?)"
     fi
 }
 

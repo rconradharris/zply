@@ -37,6 +37,7 @@ NOTE
 import os
 import sys
 
+CMD = 'git zply-fixup'
 VERSION = '0.1'
 
 
@@ -82,7 +83,12 @@ def version():
     sys.exit(0)
 
 
-def main():
+def die(msg, code=1):
+    print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
+    sys.exit(code)
+
+
+if __name__ == '__main__':
     if '-h' in sys.argv:
         usage()
     elif '-v' in sys.argv:
@@ -93,8 +99,7 @@ def main():
     filename = sys.argv[1]
 
     if not os.path.exists(filename):
-        print >> sys.stderr, "error: file '%s' not found"
-        return 3
+        die("file '%s' not found" % filename, code=3)
 
     with open(filename) as f:
         patch = f.read()
@@ -102,7 +107,3 @@ def main():
     lines = patch.split('\n')
     _fixup(lines)
     print '\n'.join(lines)
-    return 0
-
-if __name__ == '__main__':
-    sys.exit(main())
