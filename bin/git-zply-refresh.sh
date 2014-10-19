@@ -1,23 +1,3 @@
-# NAME
-#
-#   git-save-patch - save patch series to patch repo
-#
-# SYNOPSIS
-#
-#   git-save-patch <patch-repo-path> <since>
-#
-# DESCRIPTION
-#
-#   Creates a series of patches and saves them into the patch repo.
-#
-# OUTPUT
-#
-#   Prints current step to stdout
-#
-# EXIT STATUS
-#
-#   0 - success
-#   1 - failure
 CMD='git zply-refresh'
 FORMAT_PATH=$PWD/.patches
 
@@ -33,7 +13,7 @@ function die_with_cleanup() {
 }
 
 function usage() {
-    >&2 echo $@ "usage: $CMD [-h] [-v] <patch-repo-path> <since>"
+    >&2 echo $@ "usage: $CMD [-h] [-v] <patch-repo-dir> <since>"
     exit 1
 }
 
