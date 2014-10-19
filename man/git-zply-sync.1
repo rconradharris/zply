@@ -1,0 +1,31 @@
+.TH GIT-ZPLY-SYNC 1 "18 Oct 2014" "git-zply 0.1"
+.SH NAME
+git zply-sync - Sync patches into patch repo
+.SH SYNOPSIS
+.I git-zply-sync
+.B [-h] [-v] <patches-dir> <patch-repo-dir>
+.SH DESCRIPTION
+Copies patch files into patch repo and then adds them to the
+.I git index.
+Removes any patches in the patch repo that are no longer necessary.
+.SH OPTIONS
+.SS -h
+Print help
+.SS -v
+Print version to
+.I stdout
+.SH EXIT STATUS
+0 on success
+.P
+1 on error
+.SH BUGS
+Report any bugs at
+.I https://github.com/rconradharris/zply
+.SH AUTHOR
+Rick Harris <rconradharris@gmail.com>
+.SH EXAMPLES
+git zply-format -o .patches HEAD~10
+.P
+git zply-sync .patches ../patch-repo
+.SH SEE ALSO
+.B git-zply-refresh(1)

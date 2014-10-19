@@ -6,7 +6,7 @@ git-zply-diff.py [DONE]
 git-zply-fixup.py [DONE]
 git-zply-format.sh [DONE]
 git-zply-refresh.sh
-git-zply-sync.sh
+git-zply-sync.sh [DONE]
 
 - Add man git-zply for workflow documentation
 use 5

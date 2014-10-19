@@ -1,7 +1,7 @@
 CMD='git zply-sync'
 
 function usage() {
-    >&2 echo $@ "usage: $CMD [-h] [-v] <format-path> <patch-repo-path>"
+    >&2 echo $@ "usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
     exit 1
 }
 
