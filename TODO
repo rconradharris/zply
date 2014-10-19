@@ -1,6 +1,15 @@
 DOCS
 - Add man pages for each command
+
+git-zply-commit.sh [DONE]
+git-zply-diff.py [DONE]
+git-zply-fixup.py
+git-zply-format.sh
+git-zply-refresh.sh
+git-zply-sync.sh
+
 - Add man git-zply for workflow documentation
+use 5
 
 WISHLIST
 - Allow patch-repo to specify a COMMIT_MSG_TEMPLATE file
