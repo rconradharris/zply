@@ -1,7 +1,7 @@
 CMD='git zply-commit'
 
 function usage() {
-    >&2 echo $@ "usage: $CMD [-h] [-v] [-b based-on] <patch-repo-path>"
+    >&2 echo $@ "usage: $CMD [-b based-on] [-h] [-v] <patch-repo-path>"
     exit 1
 }
 

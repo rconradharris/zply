@@ -1,0 +1,31 @@
+.TH GIT-ZPLY-COMMIT 1 "18 Oct 2014" "git-zply 0.1"
+.SH NAME
+git-zply-commit - Commit any patches to the patch repo
+.SH SYNOPSIS
+.I git-zply-commit
+.B [-b <based-on>] [-h] [-v] <patch-repo-path>
+.SH DESCRIPTION
+Commits patches to the patch repo
+.SH OPTIONS
+.SS -b <based-on>
+Commit hash that the patch series as based on.
+.P
+If present, an annotation will be added to the commit message which can be
+used to figure out which upstream commit the series cleanly applied to.
+.SS -h
+Print help
+.SS -v
+Print version to
+.I stdout
+.SH EXIT STATUS
+.P
+0 on success
+.P
+1 on error
+.SH BUGS
+Report any bugs at
+.I https://github.com/rconradharris/zply
+.SH AUTHOR
+Rick Harris <rconradharris@gmail.com>
+.SH SEE ALSO
+.B git-zply-refresh(1)
