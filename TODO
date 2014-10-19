@@ -1,6 +1,3 @@
-- Rename files to bin/<foo>.sh so we get syntax highlighting without shbang
-
-
 Better edge case handling:
     - Do not save if rebase in progress
 
