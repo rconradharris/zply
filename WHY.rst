@@ -1,3 +1,41 @@
+What?
+====
+
+``zply`` is an attempt to simplify the ``ply`` patch management tool down to
+only the components that add value, which it turns out are:
+
+    * Automating the process of syncing patches into the patch repo (done by
+      hand this is tedious and error prone)
+
+    * Adding a ``Based-On`` annotation to patch repo commit messages so that
+      users know which commit a patch series cleanly applies to
+
+    * Reducing diff noise: naievely copying all modified patches into the
+      patch repo makes review difficult because many of those patches didn't
+      change in a meaningful/impactful way, but rather only context-lines or
+      ``index`` hashes changed.  ``zply`` 'fixes up` patch files and uses a
+      smart diffing algorithm to reduce the noise, making code review easier.
+
+
+Things that ``ply`` did that did not add value were:
+
+    * Apply patches (``git am`` can do this)
+
+    * Rollback patches (``git reset --hard`` can do this)
+
+    * Initialize patch repo (simple to do by hand with just ``git``)
+
+    * Link working repo to patch repo (unecessary if commands take
+      ``patch-repo-dir`` as argument)
+
+    * Apply status (``git log`` can do this)
+
+    * Patch repo health check (unecessary if no ``series`` file)
+
+    * DOT graphs of patch dependencies (cool but not used, should be a
+      separate tool anyway)
+
+
 Why zply instead of ply?
 ========================
 
@@ -14,8 +52,10 @@ Why zply instead of ply?
 * ``zply`` is not needed to apply patches (jenkins no longer needs to have
   ```ply`` installed) -- only patch maintainers who are modifying patches need
   ``zply``
-* Use standard terminology ('refresh' patches)
-* More deterministic (nothing is guessed)
+* Use standard terminology ('refresh' patches, inline with ``quilt`` and
+  ``stgit``)
+* More deterministic (no guessing last upstream hash, you specify it!)
+
 
 Downsides
 =========

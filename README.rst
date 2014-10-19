@@ -17,7 +17,7 @@ that makes it safe. It achieves this by storing patches as **files** in a
 separate git repository, the **patch repo**, instead of **commits** on a
 **branch**.
 
-Only a single new (porcelain) command is added ``git zply-refresh`` which saves
+Only a single new user-facing command is added ``git zply-refresh`` which saves
 a patch series into the patch repo.
 
 Tasks
