@@ -9,15 +9,15 @@ Description
 
 ``zply`` comes about from the observation that managing patches as **commits**
 on a separate branch and using ``git rebase`` to update them is a very
-convenient workflow. The problem is, though, since ``git rebase`` rewrites the
+convenient workflow. The problem, however, is since ``git rebase`` rewrites the
 history, there's a risk of losing work. 
 
 The goal of ``zply`` is to allow this ``git rebase`` workflow in such a way
-that makes it safe. It achieves this not storing patches at **files** in a
+that makes it safe. It achieves this by storing patches as **files** in a
 separate git repository, the **patch repo**, instead of **commits** on a
 **branch**.
 
-Only a single new (porcelain) command is added `git zply-refresh` which saves
+Only a single new (porcelain) command is added ``git zply-refresh`` which saves
 a patch series into the patch repo.
 
 Tasks
@@ -27,6 +27,7 @@ Apply Patches
 -------------
 
 ::
+
     git am --3way /path/to/patch-repo/*.patch
 
 
@@ -34,6 +35,7 @@ Modify Patches
 --------------
 
 ::
+
     git rebase -i HEAD~10
 
 
@@ -41,6 +43,7 @@ Refresh Patches
 ---------------
 
 ::
+
     git zply-refresh /path/to/patch-repo HEAD~10
 
 
@@ -48,6 +51,7 @@ Rollback Patches
 ----------------
 
 ::
+
     git reset --hard HEAD~10
 
 
@@ -55,6 +59,7 @@ Setup Patch Repo
 ----------------
 
 ::
+
     mkdir /path/to/patch-repo
     cd /path/to/patch-repo
     git init .
