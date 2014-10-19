@@ -1,0 +1,32 @@
+.TH GIT-ZPLY-FIXUP 1 "18 Oct 2014" "git-zply 0.1"
+.SH NAME
+git zply-fixup - Strip unecessary info from patch file
+.SH SYNOPSIS
+.I git-zply-fixup
+.B
+[-h] [-v] <file>
+.SH DESCRIPTION
+Strips out parts of a patch file which change frequently and would therefore
+lead to "chatty-diffs" in the patch repo.
+.SH OPTIONS
+.SS -h
+Print help
+.SS -v
+Print version to
+.I stdout
+.SH EXIT STATUS
+.P
+0 no meaningful differnce
+.P
+1 difference detected
+.P
+2 usage error
+.P
+3 one or more input files not present
+.SH BUGS
+Report any bugs at
+.I https://github.com/rconradharris/zply
+.SH AUTHOR
+Rick Harris <rconradharris@gmail.com>
+.SH SEE ALSO
+.B git-zply-refresh(1)
