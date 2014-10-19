@@ -1,13 +1,10 @@
-Better edge case handling:
-    - Do not save if rebase in progress
+DOCS
+- Add man pages for each command
+- Add man git-zply for workflow documentation
 
-Feature:
-    - Allow patch-repo to specify a COMMIT_MSG_TEMPLATE file
-        - Abort if template is not filled in
+WISHLIST
+- Allow patch-repo to specify a COMMIT_MSG_TEMPLATE file
+    - Abort if template is not filled in
 
-Man Pages:
-    - Add man pages for each command
-    - Add man git-zply for workflow documentation
-
-Code cleanup:
+CLEANUP
 - Better handle trailing-whitespace fixup (sed?)

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 VERSION=0.1
 
 function version() {

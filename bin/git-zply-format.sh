@@ -23,6 +23,10 @@ fi
 
 SINCE=$1
 
+if [[ -e .git/rebase-apply ]]; then
+    die "Cannot format patches while a rebase is in progress (in the middle of git am?)"
+fi
+
 echo "Formatting patches..."
 git format-patch -kpo $OUTPUT_PATH $SINCE > /dev/null || die "git format-patch failed"
 
