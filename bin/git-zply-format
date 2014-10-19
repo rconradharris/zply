@@ -1,17 +1,4 @@
-#!/bin/bash
-# Analagous to `git format-patch`
 CMD='git zply-format'
-VERSION=0.1
-
-function version() {
-    echo $VERSION
-    exit 0
-}
-
-function die() {
-    >&2 echo "[$CMD error]: $@"
-    exit 1
-}
 
 function usage() {
     >&2 echo $@ "usage: $CMD [-h] [-o output-path] [-v] <since>"

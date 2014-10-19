@@ -1,5 +1,3 @@
-#!/bin/bash
-#
 # NAME
 #
 #   git-save-patch - save patch series to patch repo
@@ -21,13 +19,7 @@
 #   0 - success
 #   1 - failure
 CMD='git zply-refresh'
-VERSION=0.1
 FORMAT_PATH=$PWD/.patches
-
-function version() {
-    echo $VERSION
-    exit 0
-}
 
 function cleanup() {
     if [[ -e $FORMAT_PATH ]]; then
@@ -35,18 +27,9 @@ function cleanup() {
     fi
 }
 
-function die() {
+function die_with_cleanup() {
     cleanup
-    >&2 echo "[$CMD error]: $@"
-    exit 1
-}
-
-function check_patch_repo() {
-    if [[ ! -e $1 ]]; then
-        die "Patch repo directory not found"
-    elif [[ ! -e $1/.git ]]; then
-        die "Patch repo is not a git repo (did you git init it?)"
-    fi
+    die $@
 }
 
 function usage() {
@@ -74,8 +57,8 @@ SINCE=$2
 git rev-parse -q --verify $SINCE > /dev/null || die "Revision $SINCE not found"
 BASED_ON_HASH=`git rev-parse $SINCE`
 
-git zply-format -o $FORMAT_PATH $SINCE || die "git zply-format failed"
-git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die "git zply-sync failed"
-git zply-commit -b $BASED_ON_HASH $PATCH_REPO_PATH || die "git zply-commit failed"
+git zply-format -o $FORMAT_PATH $SINCE || die_with_cleanup "git zply-format failed"
+git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die_with_cleanup "git zply-sync failed"
+git zply-commit -b $BASED_ON_HASH $PATCH_REPO_PATH || die_with_cleanup "git zply-commit failed"
 
 cleanup
