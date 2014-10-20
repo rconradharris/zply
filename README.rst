@@ -99,3 +99,10 @@ Workflow: Edit/delete existing patch
 3. Refresh patches in patch repo::
 
     git refresh-patches /path/to/patch-repo HEAD~10
+
+
+Extras
+======
+
+In the patch repo, you can include a ``.gitmessage.txt`` file to use as a commit
+message template.

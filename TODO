@@ -1,3 +1,6 @@
+- Show diff before committing (use has often has no idea what really happened
+  until looking at this diff)
+
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements
@@ -26,10 +29,6 @@
 
 DOCS
 - Add man git-zply for workflow documentation (use <file>.5)
-
-WISHLIST
-- Allow patch-repo to specify a COMMIT_MSG_TEMPLATE file
-    - Abort if template is not filled in
 
 CLEANUP
 - Remove python dependencies (just bash)

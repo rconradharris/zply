@@ -1,5 +1,16 @@
 CMD='git zply-commit'
 
+function cleanup() {
+if [[ -e .tmp-commit-msg ]]; then
+    rm .tmp-commit-msg
+fi
+}
+
+function die_with_cleanup() {
+    cleanup
+    die $@
+}
+
 function usage() {
     >&2 echo $@ "usage: $CMD [-b based-on] [-h] [-v] <patch-repo-dir>"
     exit 1
@@ -27,9 +38,15 @@ pushd $PATCH_REPO_PATH > /dev/null
 
 git add -A *.patch || die "git add -A failed"
 
-cat > .tmp-commit-msg <<-EOF
+if [[ -e .gitmessage.txt ]]; then
+    cp .gitmessage.txt .tmp-commit-msg
+    TEMPLATE=1
+else
+    cat > .tmp-commit-msg <<-EOF
 Refreshing patches...
 EOF
+    TEMPLATE=0
+fi
 
 # Add based-on annotation
 if [[ -n $BASED_ON ]]; then
@@ -37,9 +54,18 @@ if [[ -n $BASED_ON ]]; then
     echo "Based-On: $BASED_ON" >> .tmp-commit-msg
 fi
 
-# -t would abort the commit if the message was not edited; we don't want to
-# require that in all cases, so using -eF instead
-git commit -qeF .tmp-commit-msg || die "git commit failed"
-rm .tmp-commit-msg
+if [[ $TEMPLATE -eq 1 ]]; then
+    # -t means that the commit message must be edited or the commit is aborted
+    git commit -qt .tmp-commit-msg
+else
+    # -eF means don't require commit message be edited
+    git commit -qeF .tmp-commit-msg
+fi
+
+if [[ $? -ne 0 ]]; then
+    die_with_cleanup "git commit failed"
+fi
+
+cleanup
 echo "Commited patches"
 popd > /dev/null
