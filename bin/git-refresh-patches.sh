@@ -39,6 +39,6 @@ BASED_ON_HASH=`git rev-parse $SINCE`
 
 git zply-format -o $FORMAT_PATH $SINCE || die_with_cleanup "git zply-format failed"
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die_with_cleanup "git zply-sync failed"
-git zply-commit -b $BASED_ON_HASH $PATCH_REPO_PATH || die_with_cleanup "git zply-commit failed"
+git zply-commit -b $BASED_ON_HASH -d $PATCH_REPO_PATH || die_with_cleanup "git zply-commit failed"
 
 cleanup

@@ -1,6 +1,3 @@
-- Show diff before committing (use has often has no idea what really happened
-  until looking at this diff)
-
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements

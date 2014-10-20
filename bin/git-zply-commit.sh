@@ -12,13 +12,14 @@ function die_with_cleanup() {
 }
 
 function usage() {
-    >&2 echo $@ "usage: $CMD [-b based-on] [-h] [-v] <patch-repo-dir>"
+    >&2 echo $@ "usage: $CMD [-b based-on] [-d] [-h] [-v] <patch-repo-dir>"
     exit 1
 }
 
-while getopts 'b:hv' opt; do
+while getopts 'b:dhv' opt; do
     case $opt in
         b) BASED_ON=$OPTARG;;
+        d) DIFF=1;;
         h) usage;;
         v) version;;
         *) usage;;
@@ -37,6 +38,10 @@ check_patch_repo $PATCH_REPO_PATH
 pushd $PATCH_REPO_PATH > /dev/null
 
 git add -A *.patch || die "git add -A failed"
+
+if [[ $DIFF -eq 1 ]]; then
+    git diff --cached --color | less -R
+fi
 
 if [[ -e .gitmessage.txt ]]; then
     cp .gitmessage.txt .tmp-commit-msg
