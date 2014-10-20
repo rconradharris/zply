@@ -30,6 +30,12 @@ fi
 echo "Formatting patches..."
 git format-patch -kpo $OUTPUT_PATH $SINCE > /dev/null || die "git format-patch failed"
 
+# Make sure we generated at least one patch file
+ls $OUTPUT_PATH/*.patch 2>&1 > /dev/null
+if [[ $? -ne 0 ]]; then
+    die "No patch files generated (did you forget to run git am?)"
+fi
+
 for patch in `ls $OUTPUT_PATH/*.patch`; do
     git zply-fixup $patch > $patch.tmp || die "git zply-fixup failed"
     mv $patch.tmp $patch

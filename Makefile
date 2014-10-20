@@ -10,6 +10,7 @@ man: man/*.1
 
 uninstall:
 	rm $(INSTALL_PATH)/git-zply-*
+	rm $(INSTALL_PATH)/git-refresh-patches
 
 git-zply-commit: lib/utils.sh bin/git-zply-commit.sh
 	mkdir -p $(BUILD_PATH)/bin
@@ -45,8 +46,8 @@ build: git-zply-commit \
        git-zply-diff \
        git-zply-fixup \
        git-zply-format \
-       git-zply-sync
-       git-refresh-patches \
+       git-zply-sync \
+       git-refresh-patches
 
 clean:
 	rm -rf $(BUILD_PATH)

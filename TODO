@@ -9,9 +9,6 @@
     - Adding a new patch
     - Removing a patch
 
-- Should the sync command know about ``git``?
-    - Maybe ``zply-commit`` should be the only part that understand git.
-
 DOCS
 - Add man git-zply for workflow documentation (use <file>.5)
 

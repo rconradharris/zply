@@ -24,8 +24,11 @@ PATCH_REPO_PATH=`realpath $1`
 check_patch_repo $PATCH_REPO_PATH
 
 pushd $PATCH_REPO_PATH > /dev/null
+
+git add -A *.patch || die "git add -A failed"
+
 cat > .tmp-commit-msg <<-EOF
-Saving patches...
+Refreshing patches...
 EOF
 
 # Add based-on annotation
@@ -36,7 +39,7 @@ fi
 
 # -t would abort the commit if the message was not edited; we don't want to
 # require that in all cases, so using -eF instead
-git commit -qeF .tmp-commit-msg
+git commit -qeF .tmp-commit-msg || die "git commit failed"
 rm .tmp-commit-msg
 echo "Commited patches"
 popd > /dev/null

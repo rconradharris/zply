@@ -39,7 +39,7 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
 
     if [[ $copy_patch -eq 1 ]]; then
         echo "Copying $patch_basename"
-        cp $patch $PATCH_REPO_PATH
+        cp $patch $PATCH_REPO_PATH || die "cp failed: $patch_basename"
     fi
 done
 
@@ -47,11 +47,9 @@ pushd $PATCH_REPO_PATH > /dev/null
 
 for patch in `ls *.patch`; do
     patch_basename=`basename $patch`
-    if [[ -e $FORMAT_PATH/$patch_basename ]]; then
-        git add $patch_basename 2>&1 > /dev/null || die "git add failed"
-    else
+    if [[ ! -e $FORMAT_PATH/$patch_basename ]]; then
         echo "Removing unused patch $patch_basename"
-        git rm $patch_basename 2>&1 > /dev/null || die "git rm failed"
+        rm $patch_basename || die "rm failed: $patch_basename"
     fi
 done
 
