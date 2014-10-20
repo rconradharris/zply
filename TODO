@@ -1,5 +1,20 @@
 - Missing blob issue:
-    What if we 'exported' pure two-way diff patches for packaging?
+
+    Observation: the missing blob issue is a consequence of how git implements
+    3way merge. If we want to retain the convenience of it, we just have
+    accept that some merge conflicts will be non-deterministic.
+
+    However, packagers should not have to accept that: they shouldn't care
+    about merges at all.
+
+    The solution is to *export* a single, plain diff file against a project,
+    which will be guaranteed to apply cleanly.
+
+    The name of the diff would have the commit-hashed that it was based on, so
+    people receiving the patch know which *upstream* commit it will apply
+    cleanly to. For example:
+
+    842.<hash>.diff
 
 - Make flow chart documentation for each workflow
     - Packaging
@@ -21,5 +36,8 @@ CLEANUP
 - Better handle trailing-whitespace fixup (sed?)
 
 TESTING
-    - Add test-harness for diff
-    - Add test-harness for fixup
+- Add test-harness for diff
+- Add test-harness for fixup
+
+SCREENCAST
+- Show basic workflow
