@@ -2,7 +2,7 @@ What?
 ====
 
 ``zply`` is an attempt to simplify the ``ply`` patch management tool down to
-only the components that add value, which it turns out are:
+only the components that add value, namely:
 
 * Automating the process of syncing patches into the patch repo (done by
   hand this is tedious and error prone)
@@ -12,9 +12,10 @@ only the components that add value, which it turns out are:
 
 * Reducing diff noise: naievely copying all modified patches into the
   patch repo makes review difficult because many of those patches didn't
-  change in a meaningful/impactful way, but rather only context-lines or
-  ``index`` hashes changed.  ``zply`` 'fixes up` patch files and uses a
-  smart diffing algorithm to reduce the noise, making code review easier.
+  change in a meaningful/impactful way (for example, perhaps only
+  context-lines or ``index`` hashes changed.)  ``zply`` 'fixes up` patch files
+  and uses a smart diffing algorithm to reduce the noise, making code review
+  easier.
 
 
 Things that ``ply`` did that did not add value were:
@@ -61,11 +62,12 @@ Downsides
 =========
 
 * Need to convert patch-repos to new format
-* Requires modifying Jenkins tooling to use it (should actually be easy)
+* Requires modifying Jenkins (Jenkins no longer needs ``ply`` or ``zply`` at
+  all, just `git am``)
 * Installation of commands slightly trickier, instead of ``pip install ply``,
   you ``git clone`` and then run ``make``
-* Requires more understanding of git; users are expected to know how to apply
-  patches
+* Requires more understanding of ``git``; users are expected to know how to apply
+  patches, and what a 3-way merge is.
 * Rollback can be slightly trickier until you get used to it
 * Reordering patches causes more files to be touched (since patch-number is
   embdedded in filename)
@@ -78,7 +80,7 @@ History
 =======
 
 ``zply`` is the third-iteration of a patch-management workflow built entirely
-around just ``git``.
+around just ``git-rebase``.
 
 * ply-initial: simple but incomplete (never used in production)
 * ply: complete but complex and somewhat buggy for edge cases
