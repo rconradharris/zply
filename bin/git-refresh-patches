@@ -1,4 +1,4 @@
-CMD='git zply-refresh'
+CMD='git refresh-patches'
 FORMAT_PATH=$PWD/.patches
 
 function cleanup() {

@@ -1,4 +1,5 @@
-- Rename porcelain command to `git refresh-patches`
+- Missing blob issue:
+    What if we 'exported' pure two-way diff patches for packaging?
 
 - Make flow chart documentation for each workflow
     - Packaging

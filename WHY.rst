@@ -48,7 +48,7 @@ Why zply instead of ply?
     * No resolve/skip/abort commands, use: ``git am --continue``, ``git am --skip``, ``git am --abort``
 * No extra series file to maintain (less to get out of sync)
 * No linking or unlinking repos
-* Only one additional user-facing git command ``git zply-refresh``
+* Only one additional user-facing git command ``git refresh-patches``
 * ``zply`` is not needed to apply patches (jenkins no longer needs to have
   ```ply`` installed) -- only patch maintainers who are modifying patches need
   ``zply``
@@ -102,7 +102,7 @@ What It Needs to Do and Why?
 Commands (Porcelain)
 ====================
 
-* git zply-refresh
+* git refresh-patches
 
 
 Commands (Plumbing)

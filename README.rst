@@ -17,7 +17,7 @@ that makes it safe. It achieves this by storing patches as **files** in a
 separate git repository, the **patch repo**, instead of **commits** on a
 **branch**.
 
-Only a single new user-facing command is added ``git zply-refresh`` which saves
+Only a single new user-facing command is added ``git refresh-patches`` which saves
 a patch series into the patch repo.
 
 Tasks
@@ -44,7 +44,7 @@ Refresh Patches
 
 ::
 
-    git zply-refresh /path/to/patch-repo HEAD~10
+    git refresh-patches /path/to/patch-repo HEAD~10
 
 
 Rollback Patches
@@ -98,4 +98,4 @@ Workflow: Edit/delete existing patch
 
 3. Refresh patches in patch repo::
 
-    git zply-refresh /path/to/patch-repo HEAD~10
+    git refresh-patches /path/to/patch-repo HEAD~10

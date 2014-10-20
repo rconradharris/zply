@@ -31,10 +31,10 @@ git-zply-format: lib/utils.sh bin/git-zply-format.sh
 	cat lib/utils.sh bin/git-zply-format.sh > $(BUILD_PATH)/bin/git-zply-format
 	chmod +x $(BUILD_PATH)/bin/git-zply-format
 
-git-zply-refresh: lib/utils.sh bin/git-zply-refresh.sh
+git-refresh-patches: lib/utils.sh bin/git-refresh-patches.sh
 	mkdir -p $(BUILD_PATH)/bin
-	cat lib/utils.sh bin/git-zply-refresh.sh > $(BUILD_PATH)/bin/git-zply-refresh
-	chmod +x $(BUILD_PATH)/bin/git-zply-refresh
+	cat lib/utils.sh bin/git-refresh-patches.sh > $(BUILD_PATH)/bin/git-refresh-patches
+	chmod +x $(BUILD_PATH)/bin/git-refresh-patches
 
 git-zply-sync: lib/utils.sh bin/git-zply-sync.sh
 	mkdir -p $(BUILD_PATH)/bin
@@ -45,8 +45,8 @@ build: git-zply-commit \
        git-zply-diff \
        git-zply-fixup \
        git-zply-format \
-       git-zply-refresh \
        git-zply-sync
+       git-refresh-patches \
 
 clean:
 	rm -rf $(BUILD_PATH)
