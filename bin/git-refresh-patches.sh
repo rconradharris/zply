@@ -32,13 +32,9 @@ if [[ -z $1 ]] || [[ -z $2 ]]; then
 fi
 
 PATCH_REPO_PATH=$1
-check_patch_repo $PATCH_REPO_PATH
 SINCE=$2
-git rev-parse -q --verify $SINCE > /dev/null || die "Revision $SINCE not found"
-BASED_ON_HASH=`git rev-parse $SINCE`
 
+check_patch_repo $PATCH_REPO_PATH
 git zply-format -o $FORMAT_PATH $SINCE || die_with_cleanup "git zply-format failed"
 git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die_with_cleanup "git zply-sync failed"
-git zply-commit -b $BASED_ON_HASH -d $PATCH_REPO_PATH || die_with_cleanup "git zply-commit failed"
-
 cleanup

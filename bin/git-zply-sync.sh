@@ -23,6 +23,7 @@ FORMAT_PATH=`realpath $1`
 PATCH_REPO_PATH=`realpath $2`
 check_patch_repo $PATCH_REPO_PATH
 
+# Copy patches into patch repo
 for patch in `ls $FORMAT_PATH/*.patch`; do
     # Only copy patches that meaningfully changed
     copy_patch=1
@@ -43,14 +44,21 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
     fi
 done
 
+cp $FORMAT_PATH/.based-on $PATCH_REPO_PATH
+
+# git add new/updated patches; git rm unused patches
 pushd $PATCH_REPO_PATH > /dev/null
 
 for patch in `ls *.patch`; do
     patch_basename=`basename $patch`
-    if [[ ! -e $FORMAT_PATH/$patch_basename ]]; then
+    if [[ -e $FORMAT_PATH/$patch_basename ]]; then
+        git add $patch_basename || die "git add failed for $patch_basename"
+    else
         echo "Removing unused patch $patch_basename"
-        rm $patch_basename || die "rm failed: $patch_basename"
+        git rm $patch_basename || die "git rm failed for $patch_basename"
     fi
 done
+
+git add .based-on
 
 popd > /dev/null

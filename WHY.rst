@@ -7,8 +7,8 @@ only the components that add value, namely:
 * Automating the process of syncing patches into the patch repo (done by
   hand this is tedious and error prone)
 
-* Adding a ``Based-On`` annotation to patch repo commit messages so that
-  users know which commit a patch series cleanly applies to
+* Recording commit-hash that a patch series was based on so can have enough
+  information to reconstruct the code at any point.
 
 * Reducing diff noise: naievely copying all modified patches into the
   patch repo makes review difficult because many of those patches didn't
@@ -35,6 +35,9 @@ Things that ``ply`` did that did not add value were:
 
 * DOT graphs of patch dependencies (cool but not used, should be a
   separate tool anyway)
+
+* Automatically commiting into the patch repo; users should commit manually
+  after reviewing the diff
 
 
 Why zply instead of ply?
@@ -110,7 +113,6 @@ Commands (Porcelain)
 Commands (Plumbing)
 ===================
 
-* git zply-commit
 * git zply-diff
 * git zply-fixup
 * git zply-format

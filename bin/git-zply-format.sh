@@ -23,6 +23,10 @@ fi
 
 SINCE=$1
 
+# Convert `since` to a commit hash
+git rev-parse -q --verify $SINCE > /dev/null || die "Revision $SINCE not found"
+SINCE=`git rev-parse $SINCE`
+
 if [[ -e .git/rebase-apply ]]; then
     die "Cannot format patches while a rebase is in progress (in the middle of git am?)"
 fi
@@ -40,3 +44,5 @@ for patch in `ls $OUTPUT_PATH/*.patch`; do
     git zply-fixup $patch > $patch.tmp || die "git zply-fixup failed"
     mv $patch.tmp $patch
 done
+
+echo $SINCE > $OUTPUT_PATH/.based-on

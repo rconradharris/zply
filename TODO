@@ -1,3 +1,9 @@
+- Only copy .based-on if it changed (diff it)
+
+- TODO: sync should report 0 if no changes, and 1 if anything changed.
+2 for usage errors
+- Sync should print "No changes" if nothing was copied over
+
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements
