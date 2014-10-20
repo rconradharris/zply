@@ -69,6 +69,9 @@ Downsides
 * Rollback can be slightly trickier until you get used to it
 * Reordering patches causes more files to be touched (since patch-number is
   embdedded in filename)
+* ``zply`` does not fix the missing-blob issue. That is just an inherent
+  problem with using a 3way merge based on patch files. It's an annoyance, but
+  not a show-stopper.
 
 
 History

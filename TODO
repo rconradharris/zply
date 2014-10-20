@@ -1,3 +1,13 @@
+- Rename porcelain command to `git refresh-patches`
+
+- Make flow chart documentation for each workflow
+    - Packaging
+    - Refreshing all patches
+        * 3way merge conflict
+        * 2way merge conflict
+    - Adding a new patch
+    - Removing a patch
+
 - Should the sync command know about ``git``?
     - Maybe ``zply-commit`` should be the only part that understand git.
 
@@ -9,4 +19,9 @@ WISHLIST
     - Abort if template is not filled in
 
 CLEANUP
+- Remove python dependencies (just bash)
 - Better handle trailing-whitespace fixup (sed?)
+
+TESTING
+    - Add test-harness for diff
+    - Add test-harness for fixup
