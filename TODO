@@ -1,6 +1,4 @@
-- TODO: sync should report 0 if no changes, and 1 if anything changed.
-2 for usage errors
-- Sync should print "No changes" if nothing was copied over
+- Format should not print formatting; only git refresh-patches should
 
 - Missing blob issue:
 

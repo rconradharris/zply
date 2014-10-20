@@ -1,4 +1,5 @@
 CMD='git zply-sync'
+RET=0
 
 function usage() {
     >&2 echo $@ "usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
@@ -41,6 +42,7 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
     if [[ $copy_patch -eq 1 ]]; then
         echo "Copying $patch_basename"
         cp $patch $PATCH_REPO_PATH || die "cp failed: $patch_basename"
+        RET=2
     fi
 done
 
@@ -54,6 +56,7 @@ for patch in `ls *.patch`; do
     else
         echo "Removing unused patch $patch_basename"
         git rm $patch_basename || die "git rm failed for $patch_basename"
+        RET=2
     fi
 done
 
@@ -68,6 +71,9 @@ fi
 if [[ $copy_based_on -eq 1 ]]; then
     cp $FORMAT_PATH/.based-on $PATCH_REPO_PATH
     git add .based-on
+    RET=2
 fi
 
 popd > /dev/null
+
+exit $RET

@@ -36,5 +36,13 @@ SINCE=$2
 
 check_patch_repo $PATCH_REPO_PATH
 git zply-format -o $FORMAT_PATH $SINCE || die_with_cleanup "git zply-format failed"
-git zply-sync $FORMAT_PATH $PATCH_REPO_PATH || die_with_cleanup "git zply-sync failed"
+
+git zply-sync $FORMAT_PATH $PATCH_REPO_PATH
+if [[ $? -eq 0 ]]; then
+    echo "No changes to patch repo"
+    exit 0
+elif [[ $? -eq 1 ]]; then
+    die_with_cleanup "git zply-sync failed"
+fi
+
 cleanup
