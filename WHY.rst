@@ -6,8 +6,10 @@ only the components that add value, which it turns out are:
 
 * Automating the process of syncing patches into the patch repo (done by
   hand this is tedious and error prone)
+
 * Adding a ``Based-On`` annotation to patch repo commit messages so that
   users know which commit a patch series cleanly applies to
+
 * Reducing diff noise: naievely copying all modified patches into the
   patch repo makes review difficult because many of those patches didn't
   change in a meaningful/impactful way, but rather only context-lines or
@@ -18,12 +20,18 @@ only the components that add value, which it turns out are:
 Things that ``ply`` did that did not add value were:
 
 * Apply patches (``git am`` can do this)
+
 * Rollback patches (``git reset --hard`` can do this)
+
 * Initialize patch repo (simple to do by hand with just ``git``)
+
 * Link working repo to patch repo (unecessary if commands take
   ``patch-repo-dir`` as argument)
+
 * Apply status (``git log`` can do this)
+
 * Patch repo health check (unecessary if no ``series`` file)
+
 * DOT graphs of patch dependencies (cool but not used, should be a
   separate tool anyway)
 
