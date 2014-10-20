@@ -44,8 +44,6 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
     fi
 done
 
-cp $FORMAT_PATH/.based-on $PATCH_REPO_PATH
-
 # git add new/updated patches; git rm unused patches
 pushd $PATCH_REPO_PATH > /dev/null
 
@@ -59,6 +57,17 @@ for patch in `ls *.patch`; do
     fi
 done
 
-git add .based-on
+copy_based_on=1
+if [[ -e .based-on ]]; then
+    diff $FORMAT_PATH/.based-on .based-on > /dev/null
+    if [[ $? -eq 0 ]]; then
+        copy_based_on=0
+    fi
+fi
+
+if [[ $copy_based_on -eq 1 ]]; then
+    cp $FORMAT_PATH/.based-on $PATCH_REPO_PATH
+    git add .based-on
+fi
 
 popd > /dev/null
