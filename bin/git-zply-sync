@@ -72,7 +72,7 @@ pushd $PATCH_REPO_DIR > /dev/null
 
 function add_file() {
     local bn=`basename $1`
-    colorize $GREEN "+ $bn"
+    colorize $GREEN "A $bn"
     cp $1 . || die "cp failed: $bn"
     git add $bn || die "git add failed for $bn"
     RET=1
@@ -80,7 +80,7 @@ function add_file() {
 
 function update_file() {
     local bn=`basename $1`
-    colorize $YELLOW "~ $bn"
+    colorize $YELLOW "U $bn"
     cp $1 . || die "cp failed: $bn"
     git add $bn || die "git add failed for $bn"
     RET=1
@@ -88,7 +88,7 @@ function update_file() {
 
 function remove_file() {
     local bn=`basename $1`
-    colorize $RED "- $bn"
+    colorize $RED "R $bn"
     git rm $bn > /dev/null || die "git rm failed for $bn"
     RET=1
 }
