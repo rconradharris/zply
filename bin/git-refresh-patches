@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git refresh-patches'
-USAGE="usage: $CMD [-h] [-v] <patch-repo-dir> <since>"
+USAGE="usage: $CMD [-c] [-h] [-v] <patch-repo-dir> <since>"
 VERSION=0.1
 
 function die() {
@@ -23,8 +23,9 @@ function version() {
     exit 0
 }
 
-while getopts 'hv' opt; do
+while getopts 'chv' opt; do
     case $opt in
+        c) COLORIZE=1;;
         h) help;;
         v) version;;
         *) die_usage;;
@@ -42,7 +43,11 @@ PATCHES_DIR=$PWD/.patches
 
 git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
 
-git zply-sync $PATCHES_DIR $PATCH_REPO_DIR
+if [[ -n $COLORIZE ]]; then
+    COLOR_OPT=-c
+fi
+
+git zply-sync $COLOR_OPT $PATCHES_DIR $PATCH_REPO_DIR
 SYNC_RET=$?
 if [[ $SYNC_RET -gt 1 ]]; then
     die "git zply-sync failed"

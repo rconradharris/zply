@@ -3,12 +3,14 @@
 git zply-sync - Sync patches into patch repo
 .SH SYNOPSIS
 .I git-zply-sync
-.B [-h] [-v] <patches-dir> <patch-repo-dir>
+.B [-c] [-h] [-v] <patches-dir> <patch-repo-dir>
 .SH DESCRIPTION
 Copies patch files into patch repo and then adds them to the
 .I git index.
 Removes any patches in the patch repo that are no longer necessary.
 .SH OPTIONS
+.SS -c
+Colorize output
 .SS -h
 Print help
 .SS -v

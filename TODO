@@ -1,3 +1,6 @@
+- Use A/U/R instead of + - ~
+- ADD ZPLY_COLOR environment variable
+
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements

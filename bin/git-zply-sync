@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git zply-sync'
-USAGE="usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
+USAGE="usage: $CMD [-c] [-h] [-v] <patches-dir> <patch-repo-dir>"
 VERSION=0.1
 
 GREEN='\033[0;32m'
@@ -11,7 +11,11 @@ NC='\033[0m'
 function colorize() {
     COLOR=$1
     shift
-    echo -e ${COLOR}${@}${NC}
+    if [[ -n $COLORIZE ]]; then
+        echo -e ${COLOR}${@}${NC}
+    else
+        echo $@
+    fi
 }
 
 function die() {
@@ -38,8 +42,9 @@ function version() {
     exit 0
 }
 
-while getopts 'hv' opt; do
+while getopts 'chv' opt; do
     case $opt in
+        c) COLORIZE=1;;
         h) help;;
         v) version;;
         *) die_usage;;
