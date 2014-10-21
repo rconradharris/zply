@@ -40,10 +40,8 @@ PATCH_REPO_DIR=$1
 SINCE=$2
 PATCHES_DIR=$PWD/.patches
 
-echo "Formatting patches..."
 git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
 
-echo "Syncing patches into patch repo..."
 git zply-sync $PATCHES_DIR $PATCH_REPO_DIR
 SYNC_RET=$?
 if [[ $SYNC_RET -gt 1 ]]; then

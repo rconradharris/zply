@@ -60,76 +60,67 @@ elif [[ ! -e $PATCH_REPO_DIR/.git ]]; then
     die "Patch repo is not a git repo (did you git init it?)"
 fi
 
-ADDED=0
-UPDATED=0
-REMOVED=0
 RET=0
-
-
-# Copy patches into patch repo
-for patch in `ls $PATCHES_DIR/*.patch`; do
-    # Only copy patches that meaningfully changed
-    patch_basename=`basename $patch`
-    repo_patch=$PATCH_REPO_DIR/$patch_basename
-    if [[ -e $repo_patch ]]; then
-        git zply-diff $patch $repo_patch > /dev/null
-        if [[ $? -eq 1 ]]; then
-            colorize $YELLOW "~ $patch_basename"
-            cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
-            RET=1
-            let UPDATED++
-        elif [[ $? -gt 1 ]]; then
-            die "git zply-diff failed"
-        fi
-    else
-        colorize $GREEN "+ $patch_basename"
-        cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
-        RET=1
-        let ADDED++
-    fi
-done
 
 # git add new/updated patches; git rm unused patches
 pushd $PATCH_REPO_DIR > /dev/null
 
-for patch in `ls *.patch`; do
-    patch_basename=`basename $patch`
-    if [[ -e $PATCHES_DIR/$patch_basename ]]; then
-        git add $patch_basename || die "git add failed for $patch_basename"
+function add_file() {
+    local bn=`basename $1`
+    colorize $GREEN "+ $bn"
+    cp $1 . || die "cp failed: $bn"
+    git add $bn || die "git add failed for $bn"
+    RET=1
+}
+
+function update_file() {
+    local bn=`basename $1`
+    colorize $YELLOW "~ $bn"
+    cp $1 . || die "cp failed: $bn"
+    git add $bn || die "git add failed for $bn"
+    RET=1
+}
+
+function remove_file() {
+    local bn=`basename $1`
+    colorize $RED "- $bn"
+    git rm $bn > /dev/null || die "git rm failed for $bn"
+    RET=1
+}
+
+# Copy patches into patch repo
+for patch in `ls $PATCHES_DIR/*.patch`; do
+    repo_patch=$PATCH_REPO_DIR/`basename $patch`
+    if [[ -e $repo_patch ]]; then
+        git zply-diff $patch $repo_patch > /dev/null
+        if [[ $? -eq 1 ]]; then
+            update_file $patch
+        elif [[ $? -gt 1 ]]; then
+            die "git zply-diff failed"
+        fi
     else
-        colorize $RED "- $patch_basename"
-        git rm $patch_basename > /dev/null || die "git rm failed for $patch_basename"
-        RET=1
-        let REMOVED++
+        add_file $patch
     fi
 done
 
-copy_based_on=1
+# Remove unused patches
+for patch in `ls *.patch`; do
+    if [[ ! -e $PATCHES_DIR/`basename $patch` ]]; then
+        remove_file $patch
+    fi
+done
+
+# Sync .based-on file
+BASED_ON=$PATCHES_DIR/.based-on
 if [[ -e .based-on ]]; then
-    diff $PATCHES_DIR/.based-on .based-on > /dev/null
-    DIFF_RET=$?
-    if [[ $DIFF_RET -eq 1 ]]; then
-        colorize $YELLOW "~ .based-on"
-        echo -e "${YELLOW}${MSG}${NC}"
-        cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
-        git add .based-on || die "git add failed for .based-on"
-        RET=1
-        let UPDATED++
+    diff $BASED_ON .based-on > /dev/null
+    if [[ $? -eq 1 ]]; then
+        update_file $BASED_ON
     fi
 else
-    colorize $GREEN "+ .based-on"
-    cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
-    git add .based-on || die "git add failed for .based-on"
-    RET=1
-    let ADDED++
+    add_file $BASED_ON
 fi
 
 popd > /dev/null
-
-if [[ $RET -eq 0 ]]; then
-    echo "No changes to patch repo"
-else
-    echo "$ADDED added $UPDATED updated $REMOVED removed"
-fi
 
 exit $RET
