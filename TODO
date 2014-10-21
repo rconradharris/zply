@@ -1,6 +1,3 @@
-- Add -b to refresh-patches
-- Add -p to refresh-patches
-
 - Add apply-patches command
 
 

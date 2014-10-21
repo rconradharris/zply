@@ -3,14 +3,18 @@
 git refresh-patches - Refresh patches in patch repo
 .SH SYNOPSIS
 .I git-refresh-patches
-.B [-c] [-h] [-v] <patch-repo-dir> <since>
+.B [-b <branch>] [-c] [-h] [-p <remote>/<branch>] [-v] <patch-repo-dir> <since>
 .SH DESCRIPTION
 Generates a series of patches and syncs them into the patch repo.
 .SH OPTIONS
+.SS -b <branch>
+Checkout out this branch in the patch repo before syncing
 .SS -c
 Colorize output
 .SS -h
 Print help
+.SS -p <remote>/<branch>
+Pull this remote patch repo branch before syncing
 .SS -v
 Print version to
 .I stdout
