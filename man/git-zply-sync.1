@@ -3,16 +3,20 @@
 git zply-sync - Sync patches into patch repo
 .SH SYNOPSIS
 .I git-zply-sync
-.B [-c] [-h] [-v] <patches-dir> <patch-repo-dir>
+.B [-b <branch>] [-c] [-h] [-p <remote>/<branch>] [-v] <patches-dir> <patch-repo-dir>
 .SH DESCRIPTION
 Copies patch files into patch repo and then adds them to the
 .I git index.
 Removes any patches in the patch repo that are no longer necessary.
 .SH OPTIONS
+.SS -b <branch>
+Checkout out this branch in the patch repo before syncing
 .SS -c
 Colorize output
 .SS -h
 Print help
+.SS -p <remote>/<branch>
+Pull this remote patch repo branch before syncing
 .SS -v
 Print version to
 .I stdout

@@ -1,12 +1,20 @@
 #!/bin/bash
 CMD='git zply-sync'
-USAGE="usage: $CMD [-c] [-h] [-v] <patches-dir> <patch-repo-dir>"
+USAGE="usage: $CMD [-b <branch>] [-c] [-h] [-p <remote>/<branch>] [-v] <patches-dir> <patch-repo-dir>"
 VERSION=0.1
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
+
+function add_file() {
+    local bn=`basename $1`
+    colorize $GREEN "A $bn"
+    cp $1 . || die "cp failed: $bn"
+    git add $bn || die "git add failed for $bn"
+    RET=1
+}
 
 function colorize() {
     COLOR=$1
@@ -28,8 +36,16 @@ function die_usage() {
     exit 2
 }
 
-function realpath {
-    echo $(cd $(dirname $1); pwd)/$(basename $1);
+git_checkout_existing() {
+    git checkout -q $1 2>/dev/null || die "git checkout $1 failed"
+}
+
+git_checkout_new() {
+    git checkout -q -b $1 || die "git checkout -b $1 failed"
+}
+
+git_pull() {
+    git pull -q $1 $2 || die "git pull $1 $2 failed"
 }
 
 function help() {
@@ -37,15 +53,36 @@ function help() {
     exit 0
 }
 
+function realpath {
+    echo $(cd $(dirname $1); pwd)/$(basename $1);
+}
+
+function remove_file() {
+    local bn=`basename $1`
+    colorize $RED "R $bn"
+    git rm $bn > /dev/null || die "git rm failed for $bn"
+    RET=1
+}
+
+function update_file() {
+    local bn=`basename $1`
+    colorize $YELLOW "U $bn"
+    cp $1 . || die "cp failed: $bn"
+    git add $bn || die "git add failed for $bn"
+    RET=1
+}
+
 function version() {
     echo $VERSION
     exit 0
 }
 
-while getopts 'chv' opt; do
+while getopts 'b:chp:v' opt; do
     case $opt in
+        b) BRANCH=$OPTARG;;
         c) ZPLY_COLOR=1;;
         h) help;;
+        p) PULL_REMOTE=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
@@ -70,28 +107,20 @@ RET=0
 # git add new/updated patches; git rm unused patches
 pushd $PATCH_REPO_DIR > /dev/null
 
-function add_file() {
-    local bn=`basename $1`
-    colorize $GREEN "A $bn"
-    cp $1 . || die "cp failed: $bn"
-    git add $bn || die "git add failed for $bn"
-    RET=1
-}
+if [[ -n $PULL_REMOTE ]]; then
+    if [[ $PULL_REMOTE != */* ]]; then
+        die "-p argument must be of form '<remote>/<branch>'"
+    fi
 
-function update_file() {
-    local bn=`basename $1`
-    colorize $YELLOW "U $bn"
-    cp $1 . || die "cp failed: $bn"
-    git add $bn || die "git add failed for $bn"
-    RET=1
-}
+    PATCH_REPO_REMOTE=`echo $PULL_REMOTE | cut -d/ -f1`
+    PATCH_REPO_BRANCH=`echo $PULL_REMOTE | cut -d/ -f2`
+    git_pull $PATCH_REPO_REMOTE $PATCH_REPO_BRANCH
+    git_checkout_existing $PATCH_REPO_BRANCH
+fi
 
-function remove_file() {
-    local bn=`basename $1`
-    colorize $RED "R $bn"
-    git rm $bn > /dev/null || die "git rm failed for $bn"
-    RET=1
-}
+if [[ -n $BRANCH ]]; then
+    git_checkout_new $BRANCH
+fi
 
 # Copy patches into patch repo
 for patch in `ls $PATCHES_DIR/*.patch`; do

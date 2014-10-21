@@ -1,3 +1,9 @@
+- Add -b to refresh-patches
+- Add -p to refresh-patches
+
+- Add apply-patches command
+
+
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements
@@ -37,3 +43,44 @@ TESTING
 
 SCREENCAST
 - Show basic workflow
+
+
+Workflow helpers
+
+
+git apply-patches -b <branch> <patch-repo-dir>
+    # Create working-repo branch
+    git am --3way ../patch-repo/*.patch
+
+git refresh-patches -b <branch> <patch-repo-dir> since
+
+
+
+- Prep
+    # Create branch in working repo
+    # TOPIC=do-something, UPSTREAM_REMOTE=ohthree, UPSTREAM_BRANCH=upstream
+    git fetch $UPSTREAM_REMOTE
+    # Create local branch if it doesn't exist with -b
+    git checkout $UPSTREAM_BRANCH
+    git merge $UPSTREAM_REMOTE/$UPSTREAM_BRANCH
+    git checkout -b $TOPIC
+
+    # Create topic branch in patch repo
+    # TOPIC=do-something, PATCH_REPO_REMOTE=origin, PATCH_REPO_BRANCH=upstream
+        cd ../patch-repo
+        git fetch $PATCH_REPO_REMOTE
+        git checkout $PATCH_REPO_BRANCH
+        git merge $PATCH_REPO_REMOTE/$PATCH_REPO_BRANCH
+        git checkout -b $TOPIC
+
+
+- Apply and Refresh
+    cd ../working-repo
+    git am --3way ../patch-repo/*.patch
+
+- Finalize
+    git refresh-patches ../patch-repo upstream
+    cd ../patch-repo
+    git commit -a -m "Message"
+    git push $PATCH_REPO_REMOTE $TOPIC
+
