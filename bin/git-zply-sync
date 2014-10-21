@@ -2,6 +2,17 @@
 CMD='git zply-sync'
 VERSION=0.1
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+function colorize() {
+    COLOR=$1
+    shift
+    echo -e ${COLOR}${@}${NC}
+}
+
 function die() {
     >&2 echo "[$CMD error]: $@"
     exit 2
@@ -49,20 +60,19 @@ RET=0
 # Copy patches into patch repo
 for patch in `ls $PATCHES_DIR/*.patch`; do
     # Only copy patches that meaningfully changed
-    copy_patch=1
     patch_basename=`basename $patch`
     repo_patch=$PATCH_REPO_DIR/$patch_basename
     if [[ -e $repo_patch ]]; then
         git zply-diff $patch $repo_patch > /dev/null
-        if [[ $? -eq 0 ]]; then
-            copy_patch=0
-        elif [[ $? -ne 1 ]]; then
+        if [[ $? -eq 1 ]]; then
+            colorize $YELLOW "~ $patch_basename"
+            cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
+            RET=1
+        elif [[ $? -gt 1 ]]; then
             die "git zply-diff failed"
         fi
-    fi
-
-    if [[ $copy_patch -eq 1 ]]; then
-        echo "Copying $patch_basename"
+    else
+        colorize $GREEN "+ $patch_basename"
         cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
         RET=1
     fi
@@ -76,7 +86,7 @@ for patch in `ls *.patch`; do
     if [[ -e $PATCHES_DIR/$patch_basename ]]; then
         git add $patch_basename || die "git add failed for $patch_basename"
     else
-        echo "Removing unused patch $patch_basename"
+        colorize $RED "- $patch_basename"
         git rm $patch_basename > /dev/null || die "git rm failed for $patch_basename"
         RET=1
     fi
@@ -85,14 +95,18 @@ done
 copy_based_on=1
 if [[ -e .based-on ]]; then
     diff $PATCHES_DIR/.based-on .based-on > /dev/null
-    if [[ $? -eq 0 ]]; then
-        copy_based_on=0
+    DIFF_RET=$?
+    if [[ $DIFF_RET -eq 1 ]]; then
+        colorize $YELLOW "~ .based-on"
+        echo -e "${YELLOW}${MSG}${NC}"
+        cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
+        git add .based-on || die "git add failed for .based-on"
+        RET=1
     fi
-fi
-
-if [[ $copy_based_on -eq 1 ]]; then
+else
+    colorize $GREEN "+ .based-on"
     cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
-    git add .based-on
+    git add .based-on || die "git add failed for .based-on"
     RET=1
 fi
 
