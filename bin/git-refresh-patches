@@ -46,13 +46,8 @@ git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
 echo "Syncing patches into patch repo..."
 git zply-sync $PATCHES_DIR $PATCH_REPO_DIR
 SYNC_RET=$?
-if [[ $SYNC_RET -eq 0 ]]; then
-    echo "No changes to patch repo"
-    exit 0
-elif [[ $SYNC_RET -ne 1 ]]; then
+if [[ $SYNC_RET -gt 1 ]]; then
     die "git zply-sync failed"
 fi
-
 rm -rf $PATCHES_DIR
-
 exit $SYNC_RET
