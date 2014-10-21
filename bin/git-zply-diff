@@ -4,6 +4,7 @@ import subprocess
 import sys
 
 CMD = 'git zply-diff'
+USAGE = "usage: %s [-h] [-v] <patch-file1> <patch-file2>" % CMD
 VERSION = '0.1'
 
 
@@ -71,36 +72,25 @@ def meaningful_diff(source_path, dest_path):
     return result
 
 
-def usage():
-    print >> sys.stderr, "usage: %s [-h] [-v]"\
-                         " <patch-file1> <patch-file2>" % CMD
-    sys.exit(2)
-
-
-def version():
-    print VERSION
-    sys.exit(0)
-
-
-def die(msg, code=1):
-    print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
-    sys.exit(code)
-
-
 if __name__ == '__main__':
     if '-h' in sys.argv:
-        usage()
+        print USAGE
+        sys.exit(0)
     elif '-v' in sys.argv:
-        version()
+        print VERSION
+        sys.exit(0)
     elif len(sys.argv) < 3:
-        usage()
+        print >> sys.stderr, USAGE
+        sys.exit(2)
 
     filename1 = sys.argv[1]
     filename2 = sys.argv[2]
 
     for filename in (filename1, filename2):
         if not os.path.exists(filename):
-            die("file '%s' not found" % filename, code=3)
+            msg = "file '%s' not found" % filename
+            print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
+            sys.exit(3)
 
     differs = meaningful_diff(filename1, filename2)
     exit_code = 1 if differs else 0

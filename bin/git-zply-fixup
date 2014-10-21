@@ -3,6 +3,7 @@ import os
 import sys
 
 CMD = 'git zply-fixup'
+USAGE = "usage: %s [-h] [-v] <patch-file>" % CMD
 VERSION = '0.1'
 
 
@@ -38,33 +39,23 @@ def _fixup(lines):
     _remove_trailing_extra_blank_lines_from_subject(lines)
 
 
-def usage():
-    print >> sys.stderr, "usage: %s [-h] [-v] <patch-file>" % CMD
-    sys.exit(2)
-
-
-def version():
-    print VERSION
-    sys.exit(0)
-
-
-def die(msg, code=1):
-    print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
-    sys.exit(code)
-
-
 if __name__ == '__main__':
     if '-h' in sys.argv:
-        usage()
+        print USAGE
+        sys.exit(0)
     elif '-v' in sys.argv:
-        version()
+        print VERSION
+        sys.exit(0)
     elif len(sys.argv) < 2:
-        usage()
+        print >> sys.stderr, USAGE
+        sys.exit(2)
 
     filename = sys.argv[1]
 
     if not os.path.exists(filename):
-        die("file '%s' not found" % filename, code=3)
+        msg = "file '%s' not found" % filename
+        print >> sys.stderr, "[%s error]: %s" % (CMD, msg)
+        sys.exit(3)
 
     with open(filename) as f:
         patch = f.read()

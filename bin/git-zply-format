@@ -1,5 +1,6 @@
 #!/bin/bash
-CMD='git zply-format'
+CMD="git zply-format"
+USAGE="usage: $CMD [-h] [-v] <patches-dir> <since>"
 VERSION=0.1
 
 function die() {
@@ -7,9 +8,14 @@ function die() {
     exit 1
 }
 
-function usage() {
-    >&2 echo $@ "usage: $CMD [-h] [-v] <patches-dir> <since>"
+function die_usage() {
+    >&2 echo $USAGE
     exit 1
+}
+
+function help() {
+    echo $USAGE
+    exit 0
 }
 
 function version() {
@@ -19,14 +25,14 @@ function version() {
 
 while getopts 'hv' opt; do
     case $opt in
-        h) usage;;
+        h) help;;
         v) version;;
-        *) usage;;
+        *) die_usage;;
     esac
 done
 shift $(($OPTIND - 1))
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    usage
+    die_usage
 fi
 
 PATCHES_DIR=$1

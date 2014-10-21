@@ -1,5 +1,6 @@
 #!/bin/bash
 CMD='git zply-sync'
+USAGE="usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
 VERSION=0.1
 
 GREEN='\033[0;32m'
@@ -22,8 +23,13 @@ function realpath {
     echo $(cd $(dirname $1); pwd)/$(basename $1);
 }
 
-function usage() {
-    >&2 echo "usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
+function help() {
+    echo $USAGE
+    exit 0
+}
+
+function die_usage() {
+    >&2 echo $USAGE
     exit 2
 }
 
@@ -35,15 +41,15 @@ function version() {
 
 while getopts 'hv' opt; do
     case $opt in
-        h) usage;;
+        h) help;;
         v) version;;
-        *) usage;;
+        *) die_usage;;
     esac
 done
 shift $(($OPTIND - 1))
 
 if [[ -z $1 ]] || [[ -z $2 ]]; then
-    usage
+    die_usage
 fi
 
 PATCHES_DIR=`realpath $1`
