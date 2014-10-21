@@ -6,30 +6,19 @@ function usage() {
     exit 1
 }
 
-while getopts 'hv' opt; do
-    case $opt in
-        h) usage;;
-        v) version;;
-        *) usage;;
-    esac
-done
+parse_std_opts
+verify_two_args
 
-shift $(($OPTIND - 1))
-
-if [[ -z $1 ]] || [[ -z $2 ]]; then
-    usage
-fi
-
-FORMAT_PATH=`realpath $1`
-PATCH_REPO_PATH=`realpath $2`
-check_patch_repo $PATCH_REPO_PATH
+PATCHES_DIR=`realpath $1`
+PATCH_REPO_DIR=`realpath $2`
+check_patch_repo $PATCH_REPO_DIR
 
 # Copy patches into patch repo
-for patch in `ls $FORMAT_PATH/*.patch`; do
+for patch in `ls $PATCHES_DIR/*.patch`; do
     # Only copy patches that meaningfully changed
     copy_patch=1
     patch_basename=`basename $patch`
-    repo_patch=$PATCH_REPO_PATH/$patch_basename
+    repo_patch=$PATCH_REPO_DIR/$patch_basename
     if [[ -e $repo_patch ]]; then
         git zply-diff $patch $repo_patch > /dev/null
         if [[ $? -eq 0 ]]; then
@@ -41,17 +30,17 @@ for patch in `ls $FORMAT_PATH/*.patch`; do
 
     if [[ $copy_patch -eq 1 ]]; then
         echo "Copying $patch_basename"
-        cp $patch $PATCH_REPO_PATH || die "cp failed: $patch_basename"
+        cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
         RET=2
     fi
 done
 
 # git add new/updated patches; git rm unused patches
-pushd $PATCH_REPO_PATH > /dev/null
+pushd $PATCH_REPO_DIR > /dev/null
 
 for patch in `ls *.patch`; do
     patch_basename=`basename $patch`
-    if [[ -e $FORMAT_PATH/$patch_basename ]]; then
+    if [[ -e $PATCHES_DIR/$patch_basename ]]; then
         git add $patch_basename || die "git add failed for $patch_basename"
     else
         echo "Removing unused patch $patch_basename"
@@ -62,14 +51,14 @@ done
 
 copy_based_on=1
 if [[ -e .based-on ]]; then
-    diff $FORMAT_PATH/.based-on .based-on > /dev/null
+    diff $PATCHES_DIR/.based-on .based-on > /dev/null
     if [[ $? -eq 0 ]]; then
         copy_based_on=0
     fi
 fi
 
 if [[ $copy_based_on -eq 1 ]]; then
-    cp $FORMAT_PATH/.based-on $PATCH_REPO_PATH
+    cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
     git add .based-on
     RET=2
 fi

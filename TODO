@@ -1,3 +1,5 @@
+- Don't share code between commands (too much complexity)
+
 - Missing blob issue:
 
     Observation: the missing blob issue is a consequence of how git implements

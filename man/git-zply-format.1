@@ -1,18 +1,18 @@
 .TH GIT-ZPLY-FORMAT 1 "18 Oct 2014" "git-zply 0.1"
 .SH NAME
-git zply-format - Prepare patches for adding to patch repo
+git zply-format - Generate patch files
 .SH SYNOPSIS
 .I git-zply-format
-.B [-h] [-o <dir>] [-v] <file>
+.B [-h] [-v] <output-dir> <since>
 .SH DESCRIPTION
-Strips out parts of a patch file which change frequently and would therefore
-lead to "chatty-diffs" in the patch repo.
+Generate patch files from commits after
+.I <since>
+and place them into the
+.I <output-dir>
+directory.
 .SH OPTIONS
 .SS -h
 Print help
-.SS -o <dir>
-Use <dir> to store the resulting files, instead of the current working
-directory.
 .SS -v
 Print version to
 .I stdout
