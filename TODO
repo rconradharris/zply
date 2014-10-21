@@ -1,4 +1,7 @@
-- Don't share code between commands (too much complexity)
+- Colorize sync-output
+    - green for add
+    - red for rm
+    - add -C option to disable color
 
 - Missing blob issue:
 

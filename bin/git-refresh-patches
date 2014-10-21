@@ -4,12 +4,12 @@ VERSION=0.1
 
 function die() {
     >&2 echo "[$CMD error]: $@"
-    exit 1
+    exit 2
 }
 
 function usage() {
     >&2 echo $@ "usage: $CMD [-h] [-v] <patch-repo-dir> <since>"
-    exit 1
+    exit 2
 }
 
 function version() {
@@ -43,8 +43,10 @@ SYNC_RET=$?
 if [[ $SYNC_RET -eq 0 ]]; then
     echo "No changes to patch repo"
     exit 0
-elif [[ $SYNC_RET -eq 1 ]]; then
+elif [[ $SYNC_RET -ne 1 ]]; then
     die "git zply-sync failed"
 fi
 
 rm -rf $PATCHES_DIR
+
+exit $SYNC_RET

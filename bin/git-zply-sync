@@ -4,7 +4,7 @@ VERSION=0.1
 
 function die() {
     >&2 echo "[$CMD error]: $@"
-    exit 1
+    exit 2
 }
 
 function realpath {
@@ -12,8 +12,8 @@ function realpath {
 }
 
 function usage() {
-    >&2 echo $@ "usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
-    exit 1
+    >&2 echo "usage: $CMD [-h] [-v] <patches-dir> <patch-repo-dir>"
+    exit 2
 }
 
 
@@ -64,7 +64,7 @@ for patch in `ls $PATCHES_DIR/*.patch`; do
     if [[ $copy_patch -eq 1 ]]; then
         echo "Copying $patch_basename"
         cp $patch $PATCH_REPO_DIR || die "cp failed: $patch_basename"
-        RET=2
+        RET=1
     fi
 done
 
@@ -78,7 +78,7 @@ for patch in `ls *.patch`; do
     else
         echo "Removing unused patch $patch_basename"
         git rm $patch_basename > /dev/null || die "git rm failed for $patch_basename"
-        RET=2
+        RET=1
     fi
 done
 
@@ -93,7 +93,7 @@ fi
 if [[ $copy_based_on -eq 1 ]]; then
     cp $PATCHES_DIR/.based-on $PATCH_REPO_DIR
     git add .based-on
-    RET=2
+    RET=1
 fi
 
 popd > /dev/null
