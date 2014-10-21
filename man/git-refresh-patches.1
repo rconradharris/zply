@@ -5,8 +5,7 @@ git refresh-patches - Refresh patches in patch repo
 .I git-refresh-patches
 .B [-c] [-h] [-v] <patch-repo-dir> <since>
 .SH DESCRIPTION
-Generates a series of patches, syncs them into the patch repo, and then
-commits them.
+Generates a series of patches and syncs them into the patch repo.
 .SH OPTIONS
 .SS -c
 Colorize output
@@ -15,6 +14,9 @@ Print help
 .SS -v
 Print version to
 .I stdout
+.SH ENVIRONMENT
+.SS ZPLY_COLOR
+Colorize output
 .SH EXIT STATUS
 0 if no changes
 .P

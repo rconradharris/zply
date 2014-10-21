@@ -11,7 +11,7 @@ NC='\033[0m'
 function colorize() {
     COLOR=$1
     shift
-    if [[ -n $COLORIZE ]]; then
+    if [[ $ZPLY_COLOR -eq 1 ]]; then
         echo -e ${COLOR}${@}${NC}
     else
         echo $@
@@ -44,7 +44,7 @@ function version() {
 
 while getopts 'chv' opt; do
     case $opt in
-        c) COLORIZE=1;;
+        c) ZPLY_COLOR=1;;
         h) help;;
         v) version;;
         *) die_usage;;
