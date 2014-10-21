@@ -1,12 +1,33 @@
+#!/bin/bash
 CMD='git zply-format'
+VERSION=0.1
+
+function die() {
+    >&2 echo "[$CMD error]: $@"
+    exit 1
+}
 
 function usage() {
     >&2 echo $@ "usage: $CMD [-h] [-v] <patches-dir> <since>"
     exit 1
 }
 
-parse_std_opts
-verify_two_args
+function version() {
+    echo $VERSION
+    exit 0
+}
+
+while getopts 'hv' opt; do
+    case $opt in
+        h) usage;;
+        v) version;;
+        *) usage;;
+    esac
+done
+shift $(($OPTIND - 1))
+if [[ -z $1 ]] || [[ -z $2 ]]; then
+    usage
+fi
 
 PATCHES_DIR=$1
 SINCE=$2

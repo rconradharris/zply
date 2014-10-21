@@ -1,0 +1,50 @@
+#!/bin/bash
+CMD='git refresh-patches'
+VERSION=0.1
+
+function die() {
+    >&2 echo "[$CMD error]: $@"
+    exit 1
+}
+
+function usage() {
+    >&2 echo $@ "usage: $CMD [-h] [-v] <patch-repo-dir> <since>"
+    exit 1
+}
+
+function version() {
+    echo $VERSION
+    exit 0
+}
+
+while getopts 'hv' opt; do
+    case $opt in
+        h) usage;;
+        v) version;;
+        *) usage;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]] || [[ -z $2 ]]; then
+    usage
+fi
+
+PATCH_REPO_DIR=$1
+SINCE=$2
+PATCHES_DIR=$PWD/.patches
+
+echo "Formatting patches..."
+git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
+
+echo "Syncing patches into patch repo..."
+git zply-sync $PATCHES_DIR $PATCH_REPO_DIR
+SYNC_RET=$?
+if [[ $SYNC_RET -eq 0 ]]; then
+    echo "No changes to patch repo"
+    exit 0
+elif [[ $SYNC_RET -eq 1 ]]; then
+    die "git zply-sync failed"
+fi
+
+rm -rf $PATCHES_DIR
