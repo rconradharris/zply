@@ -16,6 +16,9 @@ ZPLY_PATCH_REPO_BRANCH=master
 ZPLY_PATCH_REPO_PULL=1
 ZPLY_PATCH_REPO_REMOTE=origin
 
+# Automatically commit to patch-repo after a refresh
+ZPLY_REFRESH_COMMIT=1
+
 # Pull upstream remote before apply
 ZPLY_UPSTREAM_BRANCH=master
 ZPLY_UPSTREAM_PULL=1

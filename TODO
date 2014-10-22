@@ -58,13 +58,15 @@ SCREENCAST
 
 Workflow helpers
 
+git apply-patches -b foo
+git refresh-patches -b foo -c
+
 
 git apply-patches -b <branch> <patch-repo-dir>
     # Create working-repo branch
     git am --3way ../patch-repo/*.patch
 
 git refresh-patches -b <branch> <patch-repo-dir> since
-
 
 
 ZPLY_PATCH_REPO_PULL should not be environment variable

@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git refresh-patches'
-USAGE="usage: $CMD [-b <branch>] [-c] [-h] [-pP] [-r <patch-repo-dir>] [-v] [since]"
+USAGE="usage: $CMD [-b <branch>] [-cC] [-h] [-pP] [-r <patch-repo-dir>] [-v] [since]"
 VERSION=0.1
 
 function die() {
@@ -37,7 +37,8 @@ read_config
 while getopts 'b:chpPr:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
-        c) COMMIT=1;;
+        c) ZPLY_REFRESH_COMMIT=1;;
+        C) ZPLY_REFRESH_COMMIT=0;;
         h) help;;
         p) PULL_REPO=1;;
         P) PULL_REPO=0;;
@@ -81,7 +82,7 @@ if [[ $SYNC_RET -gt 1 ]]; then
     die "git zply-sync failed"
 fi
 
-if [[ $COMMIT -eq 1 ]]; then
+if [[ $ZPLY_REFRESH_COMMIT -eq 1 ]]; then
     git commit-patches || die "git commit-patches failed"
 fi
 
