@@ -53,6 +53,14 @@ function help() {
     exit 0
 }
 
+function read_config() {
+    if [[ -e .git/zply ]]; then
+        sed 's/^/export /' < .git/zply > .git/zply.tmp
+        source .git/zply.tmp
+        rm .git/zply.tmp
+    fi
+}
+
 function realpath {
     echo $(cd $(dirname $1); pwd)/$(basename $1);
 }
@@ -76,6 +84,9 @@ function version() {
     echo $VERSION
     exit 0
 }
+
+# MAIN
+read_config
 
 while getopts 'b:hv' opt; do
     case $opt in
@@ -108,8 +119,8 @@ pushd $PATCH_REPO_DIR > /dev/null
 
 if [[ -n $ZPLY_PATCH_REPO_REMOTE ]]; then
     if [[ -n $ZPLY_PATCH_REPO_BRANCH ]]; then
-        git_pull $ZPLY_PATCH_REPO_REMOTE $ZPLY_PATCH_REPO_BRANCH
         git_checkout_existing $ZPLY_PATCH_REPO_BRANCH
+        git_pull $ZPLY_PATCH_REPO_REMOTE $ZPLY_PATCH_REPO_BRANCH
     else
         die "Must set ZPLY_PATCH_REPO_BRANCH if using ZPLY_PATCH_REPO_REMOTE"
     fi

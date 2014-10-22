@@ -18,10 +18,21 @@ function help() {
     exit 0
 }
 
+function read_config() {
+    if [[ -e .git/zply ]]; then
+        sed 's/^/export /' < .git/zply > .git/zply.tmp
+        source .git/zply.tmp
+        rm .git/zply.tmp
+    fi
+}
+
 function version() {
     echo $VERSION
     exit 0
 }
+
+# MAIN
+read_config
 
 while getopts 'hv' opt; do
     case $opt in
