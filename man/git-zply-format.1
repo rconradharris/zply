@@ -3,7 +3,7 @@
 git zply-format - Generate patch files
 .SH SYNOPSIS
 .I git-zply-format
-.B [-h] [-v] <output-dir> <since>
+.B [-h] [-o <output-dir>] [-v] <since>
 .SH DESCRIPTION
 Generate patch files from commits after
 .I <since>
@@ -13,6 +13,8 @@ directory.
 .SH OPTIONS
 .SS -h
 Print help
+.SS -o <output-dir>
+Directory to place patch files
 .SS -v
 Print version to
 .I stdout

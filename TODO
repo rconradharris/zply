@@ -1,3 +1,6 @@
+- format-patches
+    Make since an optional argument
+
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
 

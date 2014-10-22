@@ -60,7 +60,7 @@ if [[ -n $BRANCH ]]; then
     BRANCH_OPT="-b $BRANCH"
 fi
 
-git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
+git zply-format -o $PATCHES_DIR $SINCE || die "git zply-format failed"
 git zply-sync $BRANCH_OPT -r $ZPLY_PATCH_REPO_DIR $PATCHES_DIR
 SYNC_RET=$?
 if [[ $SYNC_RET -gt 1 ]]; then
