@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git refresh-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-r <remote>/<branch>] [-v] <patch-repo-dir> <since>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-v] <patch-repo-dir> <since>"
 VERSION=0.1
 
 function die() {
@@ -23,11 +23,10 @@ function version() {
     exit 0
 }
 
-while getopts 'b:hr:v' opt; do
+while getopts 'b:hv' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
-        r) PULL_REMOTE=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
@@ -46,12 +45,8 @@ if [[ -n $BRANCH ]]; then
     BRANCH_OPT="-b $BRANCH"
 fi
 
-if [[ -n $PULL_REMOTE ]]; then
-    PULL_REMOTE_OPT="-p $PULL_REMOTE"
-fi
-
 git zply-format $PATCHES_DIR $SINCE || die "git zply-format failed"
-git zply-sync $BRANCH_OPT $PULL_REMOTE_OPT $PATCHES_DIR $PATCH_REPO_DIR
+git zply-sync $BRANCH_OPT $PATCHES_DIR $PATCH_REPO_DIR
 SYNC_RET=$?
 if [[ $SYNC_RET -gt 1 ]]; then
     die "git zply-sync failed"

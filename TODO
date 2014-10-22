@@ -1,30 +1,27 @@
+- Change ZPLY_UPSTREAM_REMOTE_PULL to
+    ZPLY_UPSTREAM_REMOTE
+    ZPLY_UPSTERAM_BRANCH
+
+- Add .git/zplyconfig functionality
+    all commands automatically source this
+
+
 - Add workflow command to capture
     apply-patches -b foo
     refresh-patches -b foo
+        Use -d for diff
         Use -c for commit
-        Add -p to push to repo
-        Add -i interactive mode for commit
+        Add -p <remote> to push to repo
 
-    zply-commit [-d] [-p]
+        Add -i interactive mode for commit
+            here we ask to diff
+            ask to commit
+            ask to push
+
+    zply-commit [-d] [-i] [-p <remote>]
         * -d show diff
         * -i interactive
-        * -p push
-
-
-    zply-diff
-    zply-commit
-    zply-push
-
-
-
-    diff
-    ask Commit?
-    commit
-    ask Push?
-    push
-    ask Delete ephemeral branches
-    delete-branches
-
+        * -p push <remote>
 
 - Missing blob issue:
 
@@ -78,22 +75,28 @@ git refresh-patches -b <branch> <patch-repo-dir> since
 
 
 
-- Prep
-    # Create branch in working repo
-    # TOPIC=do-something, UPSTREAM_REMOTE=ohthree, UPSTREAM_BRANCH=upstream
-    git fetch $UPSTREAM_REMOTE
-    # Create local branch if it doesn't exist with -b
-    git checkout $UPSTREAM_BRANCH
-    git merge $UPSTREAM_REMOTE/$UPSTREAM_BRANCH
-    git checkout -b $TOPIC
+ZPLY_PATCH_REPO_PULL should not be environment variable
+ZPLY_UPSTREAM_REPO_PULL should not be environment variable
 
-    # Create topic branch in patch repo
-    # TOPIC=do-something, PATCH_REPO_REMOTE=origin, PATCH_REPO_BRANCH=upstream
-        cd ../patch-repo
-        git fetch $PATCH_REPO_REMOTE
-        git checkout $PATCH_REPO_BRANCH
-        git merge $PATCH_REPO_REMOTE/$PATCH_REPO_BRANCH
-        git checkout -b $TOPIC
+in working-repo:
+    .git/zplyconfig:
+        ZPLY_COLOR=1
+        ZPLY_INTERACTIVE=1
+
+        ZPLY_PATCH_REPO_DIR=foo
+
+        ZPLY_UPSTREAM_REMOTE=ohthree
+        ZPLY_UPSTREAM_BRANCH=upstream
+
+        ZPLY_PATCH_REPO_REMOTE=origin
+        ZPLY_PATCH_REPO_BRANCH=master
+
+        ZPLY_FORMAT_PATCH_DIR=.patches
+
+
+
+git apply-patches -b foo ../zply-nova
+git refresh-patches -b foo -c ../zply-nova upstream
 
 
 - Apply and Refresh
