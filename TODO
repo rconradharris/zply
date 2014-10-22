@@ -89,7 +89,8 @@ in working-repo:
 
 
 git apply-patches -b foo
-git refresh-patches -b foo
+git refresh-patches -b foo -c
+git commit-patches
 
 
 ZPLY_COMMIT_INTERACTIVE=1
