@@ -1,0 +1,71 @@
+#!/bin/bash
+CMD='git apply-patches'
+USAGE="usage: $CMD [-b <branch>] [-h] [-p <remote>/<branch>] [-v] <patch-repo-dir>"
+VERSION=0.1
+
+function die() {
+    >&2 echo "[$CMD error]: $@"
+    exit 2
+}
+
+function die_usage() {
+    >&2 echo $USAGE
+    exit 2
+}
+
+git_checkout_existing() {
+    git checkout -q $1 2>/dev/null || die "git checkout $1 failed"
+}
+
+git_checkout_new() {
+    git checkout -q -b $1 || die "git checkout -b $1 failed"
+}
+
+git_pull() {
+    git pull -q $1 $2 || die "git pull $1 $2 failed"
+}
+
+function help() {
+    echo $USAGE
+    exit 0
+}
+
+function version() {
+    echo $VERSION
+    exit 0
+}
+
+while getopts 'b:hp:v' opt; do
+    case $opt in
+        b) BRANCH=$OPTARG;;
+        h) help;;
+        p) PULL_REMOTE=$OPTARG;;
+        v) version;;
+        *) die_usage;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]]; then
+    die_usage
+fi
+
+PATCH_REPO_DIR=$1
+
+
+if [[ -n $PULL_REMOTE ]]; then
+    if [[ $PULL_REMOTE != */* ]]; then
+        die "-p argument must be of form '<remote>/<branch>'"
+    fi
+
+    UPSTREAM_REMOTE=`echo $PULL_REMOTE | cut -d/ -f1`
+    UPSTREAM_BRANCH=`echo $PULL_REMOTE | cut -d/ -f2`
+    git_pull $UPSTREAM_REMOTE $UPSTREAM_BRANCH
+    git_checkout_existing $UPSTREAM_BRANCH
+fi
+
+if [[ -n $BRANCH ]]; then
+    git_checkout_new $BRANCH
+fi
+
+git am --3way $PATCH_REPO_DIR/*.patch

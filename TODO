@@ -1,5 +1,10 @@
 - Add apply-patches command
-
+- Add apply-patches man page
+- Add workflow command to capture
+    applying patches
+    refreshing-patches
+    commit and push
+    cleanup ephemeral branches
 
 - Missing blob issue:
 
@@ -81,3 +86,5 @@ git refresh-patches -b <branch> <patch-repo-dir> since
     git commit -a -m "Message"
     git push $PATCH_REPO_REMOTE $TOPIC
 
+    # Delete patch-repo branch
+    # Delete working-repo branch
