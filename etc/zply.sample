@@ -1,5 +1,14 @@
 # Place in .git/zply of working repo
+
+# Colorize sync output
 ZPLY_COLOR=1
+
+# Commit options
+ZPLY_COMMIT_INTERACTIVE=1
+ZPLY_COMMIT_DIFF=1
+ZPLY_COMMIT_PUSH=1
+
+# Link working repo to patch repo
 ZPLY_PATCH_REPO_DIR=../path/to/patch/repo
 
 # Pull patch repo remote before sync

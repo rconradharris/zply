@@ -1,0 +1,102 @@
+#!/bin/bash
+CMD='git commit-patches'
+USAGE="usage: $CMD [-dD] [-h] [-iI] [-m <message>] [-pP] [-r <patch-repo-dir] [-v]"
+VERSION=0.1
+
+function ask() {
+    while true; do
+        read -p "$@ [y/N]? " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit 2;;
+            * ) exit 2;;
+        esac
+    done
+}
+
+function die() {
+    >&2 echo "[$CMD error]: $@"
+    exit 2
+}
+
+function die_usage() {
+    >&2 echo $USAGE
+    exit 2
+}
+
+function help() {
+    echo $USAGE
+    exit 0
+}
+
+function read_config() {
+    if [[ -e .git/zply ]]; then
+        sed -e '/^\s*$/d' -e '/^#/d' -e 's/^/export /' < .git/zply > .git/zply.tmp
+        source .git/zply.tmp
+        rm .git/zply.tmp
+    fi
+}
+
+function version() {
+    echo $VERSION
+    exit 0
+}
+
+# MAIN
+read_config
+
+while getopts 'dDhiIm:pPr:v' opt; do
+    case $opt in
+        d) ZPLY_COMMIT_DIFF=1;;
+        D) ZPLY_COMMIT_DIFF=0;;
+        h) help;;
+        i) ZPLY_COMMIT_INTERACTIVE=1;;
+        I) ZPLY_COMMIT_INTERACTIVE=0;;
+        m) MESSAGE=$OPTARG;;
+        p) ZPLY_COMMIT_PUSH=1;;
+        P) ZPLY_COMMIT_PUSH=0;;
+        r) ZPLY_PATCH_REPO_DIR=$OPTARG;;
+        v) version;;
+        *) die_usage;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
+    die "Must set ZPLY_PATCH_REPO_DIR or use -r <patch-repo-dir> option"
+fi
+
+pushd $ZPLY_PATCH_REPO_DIR > /dev/null
+
+if [[ $ZPLY_COMMIT_DIFF -eq 1 ]]; then
+    git diff --cached
+fi
+
+if [[ $ZPLY_COMMIT_INTERACTIVE -eq 1 ]]; then
+    ask "Do you wish to commit"
+fi
+
+if [[ -n $MESSAGE ]]; then
+    MESSAGE_OPT="-m $MESSAGE"
+fi
+
+git commit $MESSAGE_OPT
+
+if [[ $ZPLY_COMMIT_INTERACTIVE -eq 1 ]]; then
+    ask "Do you wish to push"
+    ZPLY_COMMIT_PUSH=1
+fi
+
+if [[ $ZPLY_COMMIT_PUSH -eq 1 ]]; then
+    if [[ -z $ZPLY_PATCH_REPO_REMOTE ]]; then
+        if [[ $ZPLY_COMMIT_INTERACTIVE -eq 1 ]]; then
+            read -p "Type name of patch repo remote: " ZPLY_PATCH_REPO_REMOTE
+        else
+            die "Must specify ZPLY_PATCH_REPO_REMOTE to push"
+        fi
+    fi
+    BRANCH=`git rev-parse --abbrev-ref HEAD`
+    git push $ZPLY_PATCH_REPO_REMOTE $BRANCH
+fi
+
+popd > /dev/null

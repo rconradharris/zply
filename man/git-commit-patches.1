@@ -1,0 +1,64 @@
+.TH GIT-ZPLY-COMMIT 1 "18 Oct 2014" "git-zply 0.1"
+.SH NAME
+git commit-patches - Commit patches to patch repo
+.SH SYNOPSIS
+.I git commit-patches
+.B git commit-patches [-dD] [-h] [-iI] [-m <message>] [-pP] [-r <patch-repo-dir] [-v]
+.SH DESCRIPTION
+Commits patches to patch repo
+.SH OPTIONS
+.SS -d
+Show diff before committing. Overrides the
+.I ZPLY_COMMIT_DIFF
+environment variable.
+.SS -D
+Suppress diff. Overrides the
+.I ZPLY_COMMIT_DIFF
+environment variable.
+.SS -h
+Print help
+.SS -i
+Interactive mode. Overrides the
+.I ZPLY_COMMIT_INTERACTIVE
+environment variable.
+.SS -I
+Suppress interactive mode. Overrides the
+.I ZPLY_COMMIT_INTERACTIVE
+environment variable.
+.SS -m <message>
+Provide a commit message.
+.SS -p
+Push to remote patch repo. Overrides the
+.I ZPLY_COMMIT_PUSH
+environment variable.
+.SS -P
+Suppress push to remote patch repo. Overrides the
+.I ZPLY_COMMIT_PUSH
+environment variable.
+.SS -r <patch-repo-dir>
+Patch repo directory path. Must supply this if ZPLY_PATCH_REPO_DIR is not set.
+.SS -v
+Print version to
+.I stdout
+.SH ENVIRONMENT
+.SS ZPLY_COMMIT_DIFF
+Whether to diff before committing patches. '1' to diff, '0' to disable.
+.SS ZPLY_COMMIT_INTERACTIVE
+Whether to enter interactive mode. '1' for interactive, '0' to disable.
+.SS ZPLY_COMMIT_PUSH
+Whether to push after committing patches. '1' to push, '0' to disable.
+.SS ZPLY_PATCH_REPO_DIR
+Patch repo directory path
+.SS ZPLY_PATCH_REPO_REMOTE
+Patch repo remote to push to
+.SH EXIT STATUS
+0 on success
+.P
+2 on error
+.SH BUGS
+Report any bugs at
+.I https://github.com/rconradharris/zply
+.SH AUTHOR
+Rick Harris <rconradharris@gmail.com>
+.SH SEE ALSO
+.B git-zply-diff(1), git-zply-fixup(1), git-zply-format(1), git-refresh-patches(1)

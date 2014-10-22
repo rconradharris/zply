@@ -1,5 +1,4 @@
-- Add -f -F fetch options
-    ZPLY_FETCH_REMOTES
+- Add git-commit to SEE ALSO
 
 - Add workflow command to capture
     apply-patches -b foo
@@ -92,7 +91,13 @@ in working-repo:
 
 
 git apply-patches -b foo
-git refresh-patches -b foo -c
+git refresh-patches -b foo
+
+
+ZPLY_COMMIT_INTERACTIVE=1
+ZPLY_COMMIT_DIFF=1
+ZPLY_COMMIT_PUSH=1
+git commit-patches [-dD] [-h] [-i] [-m <message>] [-pP] [-r <patch-repo-dir] [-v]
 
 
 - Apply and Refresh
@@ -104,6 +109,3 @@ git refresh-patches -b foo -c
     cd ../patch-repo
     git commit -a -m "Message"
     git push $PATCH_REPO_REMOTE $TOPIC
-
-    # Delete patch-repo branch
-    # Delete working-repo branch

@@ -9,4 +9,6 @@ man: man/*.1
 
 uninstall:
 	rm $(INSTALL_PATH)/git-zply-*
+	rm $(INSTALL_PATH)/git-apply-patches
+	rm $(INSTALL_PATH)/git-commit-patches
 	rm $(INSTALL_PATH)/git-refresh-patches
