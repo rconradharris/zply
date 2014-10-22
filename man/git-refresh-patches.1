@@ -3,7 +3,7 @@
 git refresh-patches - Refresh patches in patch repo
 .SH SYNOPSIS
 .I git-refresh-patches
-.B [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] [since]
+.B [-b <branch>] [-h] [-pP] [-r <patch-repo-dir>] [-v] [since]
 .SH DESCRIPTION
 Generates a series of patches and syncs them into the patch repo.
 .SH OPTIONS
@@ -11,6 +11,12 @@ Generates a series of patches and syncs them into the patch repo.
 Checkout out this branch in the patch repo before syncing
 .SS -h
 Print help
+.SS -p
+Pull remote patch repo before sync. Overrides
+.I ZPLY_PATCH_REPO_PULL
+environment variable.
+.SS -P
+Do not pull remote patch repo before sync. Overrides
 .SS -r <patch-repo-dir>
 Patch repo directory path. Must supply this if ZPLY_PATCH_REPO_DIR is not set.
 .SS -v
@@ -21,6 +27,8 @@ Print version to
 Colorize output
 .SS ZPLY_PATCH_REPO_BRANCH
 Name of remote's branch to pull before syncing
+.SS ZPLY_PATCH_REPO_PULL
+Whether to pull remote patch repo before sync. '1' to pull, '0' to disable.
 .SS ZPLY_PATCH_REPO_REMOTE
 Name of remote to pull before syncing
 .SS ZPLY_UPSTREAM_BRANCH

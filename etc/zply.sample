@@ -4,6 +4,7 @@ ZPLY_PATCH_REPO_DIR=../path/to/patch/repo
 
 # Pull patch repo remote before sync
 ZPLY_PATCH_REPO_BRANCH=master
+ZPLY_PATCH_REPO_PULL=1
 ZPLY_PATCH_REPO_REMOTE=origin
 
 # Pull upstream remote before apply
