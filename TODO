@@ -1,3 +1,6 @@
+- Add sample config
+- Strip blank lines from config
+
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
 
@@ -80,9 +83,11 @@ in working-repo:
 
         ZPLY_PATCH_REPO_DIR=foo
 
+        ZPLY_UPSTREAM_PULL=1
         ZPLY_UPSTREAM_REMOTE=ohthree
         ZPLY_UPSTREAM_BRANCH=upstream
 
+        ZPLY_PATCH_REPO_PULL=1
         ZPLY_PATCH_REPO_REMOTE=origin
         ZPLY_PATCH_REPO_BRANCH=master
 
@@ -90,8 +95,8 @@ in working-repo:
 
 
 
-git apply-patches -b foo ../zply-nova
-git refresh-patches -b foo -c ../zply-nova upstream
+git apply-patches -b foo
+git refresh-patches -b foo -c
 
 
 - Apply and Refresh

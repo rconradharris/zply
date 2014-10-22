@@ -1,0 +1,11 @@
+# Place in .git/zply of working repo
+ZPLY_COLOR=1
+ZPLY_PATCH_REPO_DIR=../path/to/patch/repo
+
+# Pull patch repo remote before sync
+ZPLY_PATCH_REPO_BRANCH=master
+ZPLY_PATCH_REPO_REMOTE=origin
+
+# Pull upstream remote before apply
+ZPLY_UPSTREAM_BRANCH=master
+ZPLY_UPSTREAM_REMOTE=origin
