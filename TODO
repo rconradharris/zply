@@ -1,6 +1,3 @@
-- Add sample config
-- Strip blank lines from config
-
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
 
