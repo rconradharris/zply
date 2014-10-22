@@ -65,10 +65,10 @@ fi
 
 if [[ $ZPLY_UPSTREAM_PULL -eq 1 ]]; then
     if [[ -z $ZPLY_UPSTREAM_BRANCH ]]; then
-        die "Must set ZPLY_UPSTREAM_BRANCH if pulling upstream"
+        die "Must set ZPLY_UPSTREAM_BRANCH if pulling upstream remote"
 
     elif [[ -z $ZPLY_UPSTREAM_REMOTE ]]; then
-        die "Must set ZPLY_UPSTREAM_REMOTE if pulling upstream"
+        die "Must set ZPLY_UPSTREAM_REMOTE if pulling upstream remote"
     else
         git_checkout_existing $ZPLY_UPSTREAM_BRANCH
         git_pull $ZPLY_UPSTREAM_REMOTE $ZPLY_UPSTREAM_BRANCH

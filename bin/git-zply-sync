@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git zply-sync'
-USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir> [-v] <patches-dir>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-pP] [-r <patch-repo-dir> [-v] <patches-dir>"
 VERSION=0.1
 
 GREEN='\033[0;32m'
@@ -88,10 +88,12 @@ function version() {
 # MAIN
 read_config
 
-while getopts 'b:hr:v' opt; do
+while getopts 'b:hpPr:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
+        p) ZPLY_PATCH_REPO_PULL=1;;
+        P) ZPLY_PATCH_REPO_PULL=0;;
         r) ZPLY_PATCH_REPO_DIR=$OPTARG;;
         v) version;;
         *) die_usage;;
@@ -120,16 +122,15 @@ RET=0
 # git add new/updated patches; git rm unused patches
 pushd $ZPLY_PATCH_REPO_DIR > /dev/null
 
-if [[ -n $ZPLY_PATCH_REPO_REMOTE ]]; then
-    if [[ -n $ZPLY_PATCH_REPO_BRANCH ]]; then
+if [[ $ZPLY_PATCH_REPO_PULL -eq 1 ]]; then
+    if [[ -z $ZPLY_PATCH_REPO_BRANCH ]]; then
+        die "Must set ZPLY_PATCH_REPO_BRANCH if pulling patch repo remote"
+
+    elif [[ -z $ZPLY_PATCH_REPO_REMOTE ]]; then
+        die "Must set ZPLY_PATCH_REPO_REMOTE if pulling patch repo remote"
+    else
         git_checkout_existing $ZPLY_PATCH_REPO_BRANCH
         git_pull $ZPLY_PATCH_REPO_REMOTE $ZPLY_PATCH_REPO_BRANCH
-    else
-        die "Must set ZPLY_PATCH_REPO_BRANCH if using ZPLY_PATCH_REPO_REMOTE"
-    fi
-else
-    if [[ -n $ZPLY_PATCH_REPO_BRANCH ]]; then
-        die "Must set ZPLY_PATCH_REPO_REMOTE if using ZPLY_PATCH_REPO_BRANCH"
     fi
 fi
 

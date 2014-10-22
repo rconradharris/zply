@@ -1,4 +1,5 @@
-- ADD PATCH_REPO_PULL
+- Add -pP to refresh-patches
+
 
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
