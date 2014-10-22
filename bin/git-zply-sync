@@ -82,7 +82,7 @@ while getopts 'b:chp:v' opt; do
         b) BRANCH=$OPTARG;;
         c) ZPLY_COLOR=1;;
         h) help;;
-        p) PULL_REMOTE=$OPTARG;;
+        p) ZPLY_PATCH_REPO_PULL=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
@@ -107,13 +107,13 @@ RET=0
 # git add new/updated patches; git rm unused patches
 pushd $PATCH_REPO_DIR > /dev/null
 
-if [[ -n $PULL_REMOTE ]]; then
-    if [[ $PULL_REMOTE != */* ]]; then
-        die "-p argument must be of form '<remote>/<branch>'"
+if [[ -n $ZPLY_PATCH_REPO_PULL ]]; then
+    if [[ $ZPLY_PATCH_REPO_PULL != */* ]]; then
+        die "patch repo pull option must be of form '<remote>/<branch>'"
     fi
 
-    PATCH_REPO_REMOTE=`echo $PULL_REMOTE | cut -d/ -f1`
-    PATCH_REPO_BRANCH=`echo $PULL_REMOTE | cut -d/ -f2`
+    PATCH_REPO_REMOTE=`echo $ZPLY_PATCH_REPO_PULL | cut -d/ -f1`
+    PATCH_REPO_BRANCH=`echo $ZPLY_PATCH_REPO_PULL | cut -d/ -f2`
     git_pull $PATCH_REPO_REMOTE $PATCH_REPO_BRANCH
     git_checkout_existing $PATCH_REPO_BRANCH
 fi

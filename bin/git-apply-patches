@@ -55,7 +55,7 @@ PATCH_REPO_DIR=$1
 
 if [[ -n $ZPLY_UPSTREAM_PULL ]]; then
     if [[ $ZPLY_UPSTREAM_PULL != */* ]]; then
-        die "-p argument must be of form '<remote>/<branch>'"
+        die "upstream repo pull option must be of form '<remote>/<branch>'"
     fi
 
     UPSTREAM_REMOTE=`echo $ZPLY_UPSTREAM_PULL | cut -d/ -f1`

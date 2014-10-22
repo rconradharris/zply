@@ -1,7 +1,4 @@
-- Expose ZPLY_PATCH_REPO_PULL env
-
 - Add apply-patches to SEE ALSOs
-
 
 - Add workflow command to capture
     applying patches -b foo
