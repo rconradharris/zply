@@ -1,0 +1,34 @@
+.TH GIT-ZPLY-SYNC 1 "18 Oct 2014" "git-zply 0.1"
+.SH NAME
+git apply-patches - Apply patches from patch repo
+.SH SYNOPSIS
+.I git apply-patches
+.B [-b <branch>] [-h] [-p <remote>/<branch>] [-v] <patch-repo-dir>
+.SH DESCRIPTION
+Applies patches from patch repo to the working repo
+.SH OPTIONS
+.SS -b <branch>
+Checkout out this branch in the working repo before applying
+.SS -h
+Print help
+.SS -p <remote>/<branch>
+Pull this remote upstream repo branch before applying
+.SS -v
+Print version to
+.I stdout
+.SH ENVIRONMENT
+.SS ZPLY_UPSTREAM_PULL
+<remote>/<branch> to pull before applying
+.SH EXIT STATUS
+0 if patches applied cleanly
+.P
+1 if conflicts encountered
+.P
+2 on error
+.SH BUGS
+Report any bugs at
+.I https://github.com/rconradharris/zply
+.SH AUTHOR
+Rick Harris <rconradharris@gmail.com>
+.SH SEE ALSO
+.B git-zply-diff(1), git-zply-fixup(1), git-zply-format(1), git-refresh-patches(1)

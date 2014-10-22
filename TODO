@@ -1,9 +1,12 @@
-- Add apply-patches command
-- Add apply-patches man page
+- Expose ZPLY_PATCH_REPO_PULL env
+
+- Add apply-patches to SEE ALSOs
+
+
 - Add workflow command to capture
-    applying patches
-    refreshing-patches
-    commit and push
+    applying patches -b foo
+    refreshing-patches -b foo
+    diff, commit w/ template and push
     cleanup ephemeral branches
 
 - Missing blob issue:

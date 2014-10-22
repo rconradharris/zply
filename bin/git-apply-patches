@@ -39,7 +39,7 @@ while getopts 'b:hp:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
-        p) PULL_REMOTE=$OPTARG;;
+        p) ZPLY_UPSTREAM_PULL=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
@@ -53,13 +53,13 @@ fi
 PATCH_REPO_DIR=$1
 
 
-if [[ -n $PULL_REMOTE ]]; then
-    if [[ $PULL_REMOTE != */* ]]; then
+if [[ -n $ZPLY_UPSTREAM_PULL ]]; then
+    if [[ $ZPLY_UPSTREAM_PULL != */* ]]; then
         die "-p argument must be of form '<remote>/<branch>'"
     fi
 
-    UPSTREAM_REMOTE=`echo $PULL_REMOTE | cut -d/ -f1`
-    UPSTREAM_BRANCH=`echo $PULL_REMOTE | cut -d/ -f2`
+    UPSTREAM_REMOTE=`echo $ZPLY_UPSTREAM_PULL | cut -d/ -f1`
+    UPSTREAM_BRANCH=`echo $ZPLY_UPSTREAM_PULL | cut -d/ -f2`
     git_pull $UPSTREAM_REMOTE $UPSTREAM_BRANCH
     git_checkout_existing $UPSTREAM_BRANCH
 fi
