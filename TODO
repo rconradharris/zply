@@ -1,3 +1,4 @@
+- Make patch-repo-dir option for all other commmands
 
 - Support commented out lines in readconfig
 

@@ -3,7 +3,7 @@
 git apply-patches - Apply patches from patch repo
 .SH SYNOPSIS
 .I git apply-patches
-.B [-b <branch>] [-h] [-v] [patch-repo-dir]
+.B [-b <branch>] [-h] [-r <patch-repo-dir> ] [-v]
 .SH DESCRIPTION
 Applies patches from patch repo to the working repo
 .SH OPTIONS
@@ -11,12 +11,14 @@ Applies patches from patch repo to the working repo
 Checkout out this branch in the working repo before applying
 .SS -h
 Print help
-.SS -p <remote>/<branch>
-Pull this remote upstream repo branch before applying
+.SS -r <patch-repo-dir>
+Patch repo directory path. Must supply this if ZPLY_PATCH_REPO_DIR is not set.
 .SS -v
 Print version to
 .I stdout
 .SH ENVIRONMENT
+.SS ZPLY_PATCH_REPO_DIR
+Patch repo directory path
 .SS ZPLY_UPSTREAM_BRANCH
 Name of upstream branch to pull before applying patches
 .SS ZPLY_UPSTREAM_REMOTE

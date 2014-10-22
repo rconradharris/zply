@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git apply-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-v] [patch-repo-dir]"
+USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir> [-v]"
 VERSION=0.1
 
 function die() {
@@ -46,22 +46,19 @@ function version() {
 # MAIN
 read_config
 
-while getopts 'b:hv' opt; do
+while getopts 'b:hr:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
+        r) ZPLY_PATCH_REPO_DIR=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
 done
 shift $(($OPTIND - 1))
 
-if [[ -n $1 ]]; then
-    ZPLY_PATCH_REPO_DIR=$1
-fi
-
 if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
-    die_usage
+    die "Must set ZPLY_PATCH_REPO_DIR or use -r <patch-repo-dir> option"
 fi
 
 if [[ -n $ZPLY_UPSTREAM_REMOTE ]]; then
