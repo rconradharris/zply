@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git refresh-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] <since>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] [since]"
 VERSION=0.1
 
 function die() {
@@ -45,15 +45,18 @@ while getopts 'b:hr:v' opt; do
 done
 shift $(($OPTIND - 1))
 
-if [[ -z $1 ]]; then
-    die_usage
+if [[ -n $1 ]]; then
+    SINCE=$1
+elif [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
+    SINCE=$ZPLY_UPSTREAM_BRANCH
+else
+    die "Must set ZPLY_UPSTREAM_BRANCH or supply <since> argument"
 fi
 
 if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
     die "Must set ZPLY_PATCH_REPO_DIR or use -r <patch-repo-dir> option"
 fi
 
-SINCE=$1
 PATCHES_DIR=$PWD/.patches
 
 if [[ -n $BRANCH ]]; then

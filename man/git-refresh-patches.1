@@ -3,7 +3,7 @@
 git refresh-patches - Refresh patches in patch repo
 .SH SYNOPSIS
 .I git-refresh-patches
-.B [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] <since>
+.B [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] [since]
 .SH DESCRIPTION
 Generates a series of patches and syncs them into the patch repo.
 .SH OPTIONS
@@ -23,6 +23,8 @@ Colorize output
 Name of remote's branch to pull before syncing
 .SS ZPLY_PATCH_REPO_REMOTE
 Name of remote to pull before syncing
+.SS ZPLY_UPSTREAM_BRANCH
+Name of branch to base patches on
 .SH EXIT STATUS
 0 if no changes
 .P

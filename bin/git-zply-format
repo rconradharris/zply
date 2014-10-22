@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD="git zply-format"
-USAGE="usage: $CMD [-h] [-o <output-dir>] [-v] <since>"
+USAGE="usage: $CMD [-h] [-o <output-dir>] [-v] [since]"
 VERSION=0.1
 OUTPUT_DIR=.
 
@@ -45,11 +45,13 @@ while getopts 'ho:v' opt; do
 done
 shift $(($OPTIND - 1))
 
-if [[ -z $1 ]]; then
-    die_usage
+if [[ -n $1 ]]; then
+    SINCE=$1
+elif [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
+    SINCE=$ZPLY_UPSTREAM_BRANCH
+else
+    die "Must set ZPLY_UPSTREAM_BRANCH or supply <since> argument"
 fi
-
-SINCE=$1
 
 # Convert `since` to a commit hash
 git rev-parse -q --verify $SINCE > /dev/null || die "Revision $SINCE not found"

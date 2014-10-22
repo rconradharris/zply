@@ -3,7 +3,7 @@
 git zply-format - Generate patch files
 .SH SYNOPSIS
 .I git-zply-format
-.B [-h] [-o <output-dir>] [-v] <since>
+.B [-h] [-o <output-dir>] [-v] [since]
 .SH DESCRIPTION
 Generate patch files from commits after
 .I <since>
@@ -18,6 +18,9 @@ Directory to place patch files
 .SS -v
 Print version to
 .I stdout
+.SH ENVIRONMENT
+.SS ZPLY_UPSTREAM_BRANCH
+Name of branch to base patches on
 .SH EXIT STATUS
 0 on success
 .P
