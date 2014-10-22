@@ -108,7 +108,7 @@ pushd $PATCH_REPO_DIR > /dev/null
 
 if [[ -n $ZPLY_PATCH_REPO_REMOTE ]]; then
     if [[ -n $ZPLY_PATCH_REPO_BRANCH ]]; then
-        git_pull $ZPLY_PATCH_REPO_REMOTE $ZPLY_PATCH_REMOTE_BRANCH
+        git_pull $ZPLY_PATCH_REPO_REMOTE $ZPLY_PATCH_REPO_BRANCH
         git_checkout_existing $ZPLY_PATCH_REPO_BRANCH
     else
         die "Must set ZPLY_PATCH_REPO_BRANCH if using ZPLY_PATCH_REPO_REMOTE"

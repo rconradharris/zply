@@ -1,7 +1,3 @@
-- Change ZPLY_UPSTREAM_REMOTE_PULL to
-    ZPLY_UPSTREAM_REMOTE
-    ZPLY_UPSTERAM_BRANCH
-
 - Add .git/zplyconfig functionality
     all commands automatically source this
 

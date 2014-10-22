@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git apply-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-p <remote>/<branch>] [-v] <patch-repo-dir>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-v] <patch-repo-dir>"
 VERSION=0.1
 
 function die() {
@@ -35,11 +35,10 @@ function version() {
     exit 0
 }
 
-while getopts 'b:hp:v' opt; do
+while getopts 'b:hv' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
-        p) ZPLY_UPSTREAM_REPO_PULL=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
@@ -52,16 +51,17 @@ fi
 
 PATCH_REPO_DIR=$1
 
-
-if [[ -n $ZPLY_UPSTREAM_REPO_PULL ]]; then
-    if [[ $ZPLY_UPSTREAM_REPO_PULL != */* ]]; then
-        die "upstream repo pull option must be of form '<remote>/<branch>'"
+if [[ -n $ZPLY_UPSTREAM_REMOTE ]]; then
+    if [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
+        git_pull $ZPLY_UPSTREAM_REMOTE $ZPLY_UPSTREAM_BRANCH
+        git_checkout_existing $ZPLY_UPSTREAM_BRANCH
+    else
+        die "Must set ZPLY_UPSTREAM_BRANCH if using ZPLY_UPSTREAM_REMOTE"
     fi
-
-    UPSTREAM_REMOTE=`echo $ZPLY_UPSTREAM_REPO_PULL | cut -d/ -f1`
-    UPSTREAM_BRANCH=`echo $ZPLY_UPSTREAM_REPO_PULL | cut -d/ -f2`
-    git_pull $UPSTREAM_REMOTE $UPSTREAM_BRANCH
-    git_checkout_existing $UPSTREAM_BRANCH
+else
+    if [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
+        die "Must set ZPLY_UPSTREAM_REMOTE if using ZPLY_UPSTREAM_BRANCH"
+    fi
 fi
 
 if [[ -n $BRANCH ]]; then
