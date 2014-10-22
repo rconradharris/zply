@@ -55,7 +55,7 @@ function help() {
 
 function read_config() {
     if [[ -e .git/zply ]]; then
-        sed 's/^/export /' < .git/zply > .git/zply.tmp
+        sed -e '/^#/d' -e 's/^/export /' < .git/zply > .git/zply.tmp
         source .git/zply.tmp
         rm .git/zply.tmp
     fi

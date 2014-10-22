@@ -1,8 +1,6 @@
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
 
-- Support commented out lines in readconfig
-
 - Add workflow command to capture
     apply-patches -b foo
     refresh-patches -b foo
