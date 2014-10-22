@@ -113,4 +113,4 @@ Configuration
 =============
 
 The working repo can contain a configuration file at ``.git/zply``. Checkout
-``etc/zply.sample`` for an exmaple config.
+``etc/zply.sample`` for an example config.
