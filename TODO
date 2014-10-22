@@ -1,5 +1,3 @@
-- Add git-commit to SEE ALSO
-
 - Add workflow command to capture
     apply-patches -b foo
     refresh-patches -b foo
