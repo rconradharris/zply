@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git apply-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-v] <patch-repo-dir>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-v] [patch-repo-dir]"
 VERSION=0.1
 
 function die() {
@@ -56,11 +56,13 @@ while getopts 'b:hv' opt; do
 done
 shift $(($OPTIND - 1))
 
-if [[ -z $1 ]]; then
-    die_usage
+if [[ -n $1 ]]; then
+    ZPLY_PATCH_REPO_DIR=$1
 fi
 
-PATCH_REPO_DIR=$1
+if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
+    die_usage
+fi
 
 if [[ -n $ZPLY_UPSTREAM_REMOTE ]]; then
     if [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
@@ -79,4 +81,4 @@ if [[ -n $BRANCH ]]; then
     git_checkout_new $BRANCH
 fi
 
-git am --3way $PATCH_REPO_DIR/*.patch
+git am --3way $ZPLY_PATCH_REPO_DIR/*.patch

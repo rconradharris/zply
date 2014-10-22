@@ -1,3 +1,6 @@
+
+- Support commented out lines in readconfig
+
 - Add workflow command to capture
     apply-patches -b foo
     refresh-patches -b foo
