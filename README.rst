@@ -27,7 +27,9 @@ Apply Patches
 -------------
 
 ::
+    git apply-patches
 
+    # Plain git am also works
     git am --3way /path/to/patch-repo/*.patch
 
 
@@ -44,7 +46,15 @@ Refresh Patches
 
 ::
 
-    git refresh-patches /path/to/patch-repo HEAD~10
+    git refresh-patches
+
+
+Commit Patches
+--------------
+
+::
+
+    git commit-patches
 
 
 Rollback Patches
@@ -73,7 +83,7 @@ Add New Patch
 
 1. Apply patches::
 
-    git am /path/to/patch-repo/*.patch
+    git apply-patches
 
 2. Create a new commit::
 
@@ -82,7 +92,7 @@ Add New Patch
 
 3. Save the new patch::
 
-    git save-patch /path/to/patch-repo HEAD^
+    git refresh-patches HEAD^
 
 
 Workflow: Edit/delete existing patch
@@ -90,7 +100,7 @@ Workflow: Edit/delete existing patch
 
 1. Apply patches::
 
-    git am --3way /path/to/patch-repo/*.patch
+    git apply-patches
 
 2. Use interactive rebase edit/delete patch::
 
@@ -98,11 +108,11 @@ Workflow: Edit/delete existing patch
 
 3. Refresh patches in patch repo::
 
-    git refresh-patches /path/to/patch-repo HEAD~10
+    git refresh-patches HEAD~10
 
 
-Extras
-======
+Configuration
+=============
 
-In the patch repo, you can include a ``.gitmessage.txt`` file to use as a commit
-message template.
+The working repo can contain a configuration file at ``.git/zply``. Checkout
+``etc/zply.sample`` for an exmaple config.
