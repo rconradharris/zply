@@ -8,4 +8,5 @@ ZPLY_PATCH_REPO_REMOTE=origin
 
 # Pull upstream remote before apply
 ZPLY_UPSTREAM_BRANCH=master
+ZPLY_UPSTREAM_PULL=1
 ZPLY_UPSTREAM_REMOTE=origin

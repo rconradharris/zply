@@ -1,3 +1,5 @@
+- ADD PATCH_REPO_PULL
+
 - Add -f -F fetch options
     ZPLY_FETCH_REMOTES
 
@@ -89,7 +91,6 @@ in working-repo:
         ZPLY_PATCH_REPO_BRANCH=master
 
         ZPLY_FORMAT_PATCH_DIR=.patches
-
 
 
 git apply-patches -b foo

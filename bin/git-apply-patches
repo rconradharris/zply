@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git apply-patches'
-USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir> [-v]"
+USAGE="usage: $CMD [-b <branch>] [-h] [-pP] [-r <patch-repo-dir>] [-v]"
 VERSION=0.1
 
 function die() {
@@ -46,10 +46,12 @@ function version() {
 # MAIN
 read_config
 
-while getopts 'b:hr:v' opt; do
+while getopts 'b:hpPr:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
+        p) ZPLY_UPSTREAM_PULL=1;;
+        P) ZPLY_UPSTREAM_PULL=0;;
         r) ZPLY_PATCH_REPO_DIR=$OPTARG;;
         v) version;;
         *) die_usage;;
@@ -61,16 +63,15 @@ if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
     die "Must set ZPLY_PATCH_REPO_DIR or use -r <patch-repo-dir> option"
 fi
 
-if [[ -n $ZPLY_UPSTREAM_REMOTE ]]; then
-    if [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
+if [[ $ZPLY_UPSTREAM_PULL -eq 1 ]]; then
+    if [[ -z $ZPLY_UPSTREAM_BRANCH ]]; then
+        die "Must set ZPLY_UPSTREAM_BRANCH if pulling upstream"
+
+    elif [[ -z $ZPLY_UPSTREAM_REMOTE ]]; then
+        die "Must set ZPLY_UPSTREAM_REMOTE if pulling upstream"
+    else
         git_checkout_existing $ZPLY_UPSTREAM_BRANCH
         git_pull $ZPLY_UPSTREAM_REMOTE $ZPLY_UPSTREAM_BRANCH
-    else
-        die "Must set ZPLY_UPSTREAM_BRANCH if using ZPLY_UPSTREAM_REMOTE"
-    fi
-else
-    if [[ -n $ZPLY_UPSTREAM_BRANCH ]]; then
-        die "Must set ZPLY_UPSTREAM_REMOTE if using ZPLY_UPSTREAM_BRANCH"
     fi
 fi
 
