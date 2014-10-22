@@ -1,6 +1,6 @@
 #!/bin/bash
 CMD='git zply-sync'
-USAGE="usage: $CMD [-b <branch>] [-h] [-v] <patches-dir> <patch-repo-dir>"
+USAGE="usage: $CMD [-b <branch>] [-h] [-r <patch-repo-dir> [-v] <patches-dir>"
 VERSION=0.1
 
 GREEN='\033[0;32m'
@@ -88,34 +88,37 @@ function version() {
 # MAIN
 read_config
 
-while getopts 'b:hv' opt; do
+while getopts 'b:hr:v' opt; do
     case $opt in
         b) BRANCH=$OPTARG;;
         h) help;;
+        r) ZPLY_PATCH_REPO_DIR=$OPTARG;;
         v) version;;
         *) die_usage;;
     esac
 done
 shift $(($OPTIND - 1))
 
-if [[ -z $1 ]] || [[ -z $2 ]]; then
+if [[ -z $1 ]]; then
     die_usage
 fi
 
-PATCHES_DIR=`realpath $1`
-PATCH_REPO_DIR=`realpath $2`
+if [[ -z $ZPLY_PATCH_REPO_DIR ]]; then
+    die "Must set ZPLY_PATCH_REPO_DIR or use -r <patch-repo-dir> option"
+fi
 
-if [[ ! -e $PATCH_REPO_DIR ]]; then
+PATCHES_DIR=`realpath $1`
+
+if [[ ! -e $ZPLY_PATCH_REPO_DIR ]]; then
     die "Patch repo directory not found"
-elif [[ ! -e $PATCH_REPO_DIR/.git ]]; then
+elif [[ ! -e $ZPLY_PATCH_REPO_DIR/.git ]]; then
     die "Patch repo is not a git repo (did you git init it?)"
 fi
 
 RET=0
 
 # git add new/updated patches; git rm unused patches
-pushd $PATCH_REPO_DIR > /dev/null
-
+pushd $ZPLY_PATCH_REPO_DIR > /dev/null
 
 if [[ -n $ZPLY_PATCH_REPO_REMOTE ]]; then
     if [[ -n $ZPLY_PATCH_REPO_BRANCH ]]; then
@@ -136,7 +139,7 @@ fi
 
 # Copy patches into patch repo
 for patch in `ls $PATCHES_DIR/*.patch`; do
-    repo_patch=$PATCH_REPO_DIR/`basename $patch`
+    repo_patch=`basename $patch`
     if [[ -e $repo_patch ]]; then
         git zply-diff $patch $repo_patch > /dev/null
         if [[ $? -eq 1 ]]; then

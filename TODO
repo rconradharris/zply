@@ -1,5 +1,11 @@
 - Make patch-repo-dir option for all other commmands
 
+bin/git-refresh-patches
+bin/git-zply-format
+
+- Add -f -F fetch options
+    ZPLY_FETCH_REMOTES
+
 - Support commented out lines in readconfig
 
 - Add workflow command to capture
