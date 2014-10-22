@@ -3,7 +3,7 @@
 git refresh-patches - Refresh patches in patch repo
 .SH SYNOPSIS
 .I git-refresh-patches
-.B [-b <branch>] [-h] [-v] <patch-repo-dir> <since>
+.B [-b <branch>] [-h] [-r <patch-repo-dir>] [-v] <since>
 .SH DESCRIPTION
 Generates a series of patches and syncs them into the patch repo.
 .SH OPTIONS
@@ -11,6 +11,8 @@ Generates a series of patches and syncs them into the patch repo.
 Checkout out this branch in the patch repo before syncing
 .SS -h
 Print help
+.SS -r <patch-repo-dir>
+Patch repo directory path. Must supply this if ZPLY_PATCH_REPO_DIR is not set.
 .SS -v
 Print version to
 .I stdout
