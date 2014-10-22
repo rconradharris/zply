@@ -1,8 +1,30 @@
 - Add workflow command to capture
-    applying patches -b foo
-    refreshing-patches -b foo
-    diff, commit w/ template and push
-    cleanup ephemeral branches
+    apply-patches -b foo
+    refresh-patches -b foo
+        Use -c for commit
+        Add -p to push to repo
+        Add -i interactive mode for commit
+
+    zply-commit [-d] [-p]
+        * -d show diff
+        * -i interactive
+        * -p push
+
+
+    zply-diff
+    zply-commit
+    zply-push
+
+
+
+    diff
+    ask Commit?
+    commit
+    ask Push?
+    push
+    ask Delete ephemeral branches
+    delete-branches
+
 
 - Missing blob issue:
 
